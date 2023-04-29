@@ -1,13 +1,13 @@
 import datetime
 from dataclasses import dataclass
-from typing import Literal, TypedDict
+from typing import Literal
 
 from typing_extensions import Self
 
-from .base_objects import WorldstateObject, Record
+from .base import WorldstateObject, Record
 
 
-class _CambionDriftRecord(Record, TypedDict):
+class _CambionDriftRecord(Record):
     expiry: str
     activation: str
     state: Literal["vome", "fass"]
@@ -24,11 +24,11 @@ class CambionDrift(WorldstateObject):
     time_left: str
 
     @classmethod
-    def _from_response(cls: 'CambionDrift', response: _CambionDriftRecord) -> Self:
+    def _from_response(cls: "CambionDrift", response: _CambionDriftRecord) -> Self:
         return cls(
             activation=datetime.datetime.fromisoformat(response["activation"]),
             expiry=datetime.datetime.fromisoformat(response["expiry"]),
-            active=response["active"],
-            state=response["state"],
-            time_left=response["timeLeft"],
+            active=response.get("active"),
+            state=response.get("state"),
+            time_left=response.get("timeLeft"),
         )

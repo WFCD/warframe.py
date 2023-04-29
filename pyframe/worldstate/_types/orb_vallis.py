@@ -4,10 +4,10 @@ from typing import Literal, TypedDict
 
 from typing_extensions import Self
 
-from .base_objects import WorldstateObject, Record
+from .base import WorldstateObject, Record
 
 
-class _OrbVallisRecord(Record, TypedDict):
+class _OrbVallisRecord(Record):
     expiry: str
     activation: str
     timeLeft: str
@@ -22,10 +22,10 @@ class OrbVallis(WorldstateObject):
     is_warm: bool
 
     @classmethod
-    def _from_response(cls: 'OrbVallis', response: _OrbVallisRecord) -> Self:
+    def _from_response(cls: "OrbVallis", response: _OrbVallisRecord) -> Self:
         return cls(
             activation=datetime.datetime.fromisoformat(response["activation"]),
             expiry=datetime.datetime.fromisoformat(response["expiry"]),
-            time_left=response["timeLeft"],
-            is_warm=response["isWarm"],
+            time_left=response.get("timeLeft"),
+            is_warm=response.get("isWarm"),
         )

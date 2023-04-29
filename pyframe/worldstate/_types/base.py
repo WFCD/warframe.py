@@ -1,25 +1,27 @@
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from enum import Enum
+from typing import TypedDict
 
 from typing_extensions import Self
 
 
-class Record:
+class Record(TypedDict):
     pass
 
 
 class WorldstateObject(ABC):
-
     @classmethod
     @abstractmethod
     def _from_response(cls, response: Record) -> Self:
         pass
 
-@dataclass
+
+@dataclass(frozen=True, order=True)
 class Node:
     node: str
     node_key: str
+
 
 class Faction(Enum):
     Grineer = 1
@@ -28,6 +30,7 @@ class Faction(Enum):
     Orokin = 4
     Sentient = 5
     Narmer = 6
+
 
 class MissionType(Enum):
     Arena = 1
@@ -65,3 +68,12 @@ class MissionType(Enum):
     VoidCascade = 33
     VoidFlood = 34
     Volatile = 35
+
+
+class CountedItemRecord(Record):
+    count: int
+    type: str
+
+
+class RewardRecord(Record):
+    ...

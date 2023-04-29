@@ -1,15 +1,15 @@
 from dataclasses import dataclass
 import datetime
-from typing import Optional, TypedDict
+from typing import Optional
 
 from typing_extensions import Self
 
-from .base_objects import Record, WorldstateObject, Node, Faction, MissionType
+from .base import Record, WorldstateObject, Node, Faction, MissionType
 
 # TODO: IMPLEMENT REWARDS to be another type (https://docs.warframestat.us/#tag/Worldstate/operation/getAlertsByPlatform)
 
 
-class _AlertMissionRecord(Record, TypedDict):
+class _AlertMissionRecord(Record):
     reward: ...
     node: str
     nodeKey: str
@@ -32,7 +32,8 @@ class _AlertMissionRecord(Record, TypedDict):
     levelAuras: list[str]
     description: str
 
-@dataclass
+
+@dataclass(frozen=True, order=True)
 class AlertMission(WorldstateObject):
     reward: ...
     location: Node
@@ -57,31 +58,28 @@ class AlertMission(WorldstateObject):
     def _from_response(cls, response: _AlertMissionRecord) -> Self:
         raise NotImplementedError("Implement reward correctly.")
         return cls(
-            reward=response["reward"],
-            location=Node(
-                node=response["node"],
-                node_key=response["nodeKey"]
-            ),
+            reward=response.get("reward"),
+            location=Node(node=response.get("node"], node_key=response["nodeKey")),
             faction=getattr(Faction, response["faction"], None),
-            max_enemy_level=response["maxEnemyLevel"],
-            min_enemy_level=response["minEnemyLevel"],
-            max_wave=response["maxWaveNum"],
+            max_enemy_level=response.get("maxEnemyLevel"),
+            min_enemy_level=response.get("minEnemyLevel"),
+            max_wave=response.get("maxWaveNum"),
             mission_type=getattr(MissionType, response["type"].replace(" ", ""), None),
-            is_nightmare=response["nightmare"],
-            archwing_required=response["archwingRequired"],
-            is_sharkwing=response["isSharkwing"],
-            enemy_spec=response["enemySpec"],
-            level_override=response["levelOverride"],
-            advanced_spawners=response["advancedSpawners"],
-            required_items=response["requiredItems"],
-            requires_consumable_items=response["consumeRequiredItems"],
-            leaders_always_allowed=response["leadersAlwaysAllowed"],
-            level_auras=response["levelAuras"],
-            description=response["description"]
+            is_nightmare=response.get("nightmare"),
+            archwing_required=response.get("archwingRequired"),
+            is_sharkwing=response.get("isSharkwing"),
+            enemy_spec=response.get("enemySpec"),
+            level_override=response.get("levelOverride"),
+            advanced_spawners=response.get("advancedSpawners"),
+            required_items=response.get("requiredItems"),
+            requires_consumable_items=response.get("consumeRequiredItems"),
+            leaders_always_allowed=response.get("leadersAlwaysAllowed"),
+            level_auras=response.get("levelAuras"),
+            description=response.get("description"),
         )
 
 
-class _AlertRecord(Record, TypedDict):
+class _AlertRecord(Record):
     activation: str
     expiry: str
     startString: str
@@ -92,7 +90,7 @@ class _AlertRecord(Record, TypedDict):
     rewardTypes: list
 
 
-@dataclass
+@dataclass(frozen=True, order=True)
 class Alert(WorldstateObject):
     activation: datetime.datetime
     expiry: datetime.datetime
@@ -105,16 +103,16 @@ class Alert(WorldstateObject):
 
     @classmethod
     def _from_response(cls, response: list[_AlertRecord]) -> list[Self]:
-        return [cls(
-            activation=datetime.datetime.fromisoformat(response_item['activation']),
-            expiry=response_item['expiry'],
-            start_string=response_item['startString'],
-            active=response_item['active'],
-            mission=AlertMission._from_response(response["mission"]),
-            expired=response_item['expired'],
-            eta=response_item['eta'],
-            reward_types=response_item['rewardTypes'],
-        )
-            for response_item
-            in response
+        return [
+            cls(
+                activation=datetime.datetime.fromisoformat(response_item["activation"]),
+                expiry=response_item.get("expiry"),
+                start_string=response_item.get("startString"),
+                active=response_item.get("active"),
+                mission=AlertMission._from_response(response["mission"]),
+                expired=response_item.get("expired"),
+                eta=response_item.get("eta"),
+                reward_types=response_item.get("rewardTypes"),
+            )
+            for response_item in response
         ]

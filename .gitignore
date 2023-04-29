@@ -1,2 +1,3 @@
 venv/
 Formatter.txt
+__pycache__/
