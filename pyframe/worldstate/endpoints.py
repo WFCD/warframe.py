@@ -66,5 +66,5 @@ class Language(Enum):
     Ukrainian = UK
 
 
-def build_enpoint(enpoint: Enpoint, language: Language=Language.EN):
-    return f"{enpoint.value}/?language={language.value}"
+def build_enpoint(endpoint: Enpoint, language: Language=Language.EN):
+    return f"{endpoint.value}/?language={language.value}"
