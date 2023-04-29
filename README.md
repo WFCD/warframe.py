@@ -1,6 +1,6 @@
 # pyframe
 
-An asynchronous Python API wrapper for [the Warframestat API](https://hub.warframestat.us).
+An asynchronous Python API wrapper for [the Warframestat API](https://hub.warframestat.us) and (later) [the warframe.market API](https://warframe.market/api_docs).
 
 # What to expect
 
