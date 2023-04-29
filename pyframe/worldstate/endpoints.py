@@ -1,6 +1,6 @@
 from enum import Enum
 
-class Enpoint(Enum):
+class Endpoint(Enum):
     GENERAL = "https://api.warframestat.us/pc"
 
     # Open Worlds
@@ -66,5 +66,5 @@ class Language(Enum):
     Ukrainian = UK
 
 
-def build_enpoint(endpoint: Enpoint, language: Language=Language.EN):
+def build_enpoint(endpoint: Endpoint, language: Language=Language.EN):
     return f"{endpoint.value}/?language={language.value}"
