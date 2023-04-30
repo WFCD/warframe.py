@@ -104,12 +104,29 @@ class ItemType(Enum):
     ConservationPrey = 100
 
 
-class Categories(Enum):
-    Primary = 1
-    Secondary = 2
-    Melee = 3
-    Misc = 4
-    Arcanes = 5
+class Category(Enum):
+    ArchGun = 1
+    Pets = 2
+    ArchMelee = 3
+    Warframes = 4
+    Enemy = 5
+    Fish = 6
+    Resources = 7
+    Misc = 8
+    Glyphs = 9
+    Sentinels = 10
+    Secondary = 11
+    Arcanes = 12
+    Primary = 13
+    Gear = 14
+    Sigils = 15
+    Mods = 16
+    Node = 17
+    Melee = 18
+    Skins = 19
+    Relics = 20
+    Quests = 21
+    Archwing = 21
 
 
 class Item:
