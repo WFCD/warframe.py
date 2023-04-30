@@ -1,5 +1,6 @@
 import datetime
 from dataclasses import dataclass
+from typing import Optional
 
 from typing_extensions import Self
 
@@ -7,6 +8,7 @@ from .base import WorldstateObject, Record
 
 
 class _DailyDealRecord(Record):
+    # required
     sold: int
     item: str
     total: int
@@ -16,9 +18,13 @@ class _DailyDealRecord(Record):
     discount: int
     expiry: str
 
+    # optional
+    activation: Optional[str]
+
 
 @dataclass(frozen=True, order=True)
 class DailyDeal(WorldstateObject):
+    # required
     sold: int
     item: str
     total_available: int
@@ -27,6 +33,9 @@ class DailyDeal(WorldstateObject):
     sales_price: int
     discount: int
     expiry: datetime.datetime
+
+    # optional
+    activation: Optional[datetime.datetime]
 
     @classmethod
     def _from_response(cls, response: list[_DailyDealRecord]) -> list[Self]:
@@ -39,7 +48,12 @@ class DailyDeal(WorldstateObject):
                 original_price=response_item.get("originalPrice"),
                 sales_price=response_item.get("salePrice"),
                 discount=response_item.get("discount"),
-                expiry=datetime.datetime.fromisoformat(response_item["expiry"]),
+                expiry=datetime.datetime.fromisoformat(response_item.get("expiry")),
+                activation=datetime.datetime.fromisoformat(
+                    response_item.get("activation")
+                )
+                if "activation" in response_item
+                else None,
             )
             for response_item in response
         ]

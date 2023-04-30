@@ -8,36 +8,40 @@ from .base import WorldstateObject, Record
 
 
 class _CetusRecord(Record):
-    activation: Optional[str]
+    # required
     expiry: str
+    isDay: bool
+    timeLeft: str
+
+    # optional
+    activation: Optional[str]
     startString: Optional[str]
     active: Optional[bool]
-    isDay: bool
     state: Optional[Literal["day", "night"]]
-    timeLeft: str
     shortString: Optional[str]
 
 
 @dataclass(frozen=True, order=True)
 class Cetus(WorldstateObject):
-    activation: Optional[datetime.datetime]
+    # required
     expiry: datetime.datetime
+    is_day: bool
+    time_left: str
+
+    # optional
+    activation: Optional[datetime.datetime]
     start_string: Optional[str]
     active: Optional[bool]
-    is_day: bool
     state: Optional[Literal["day", "night"]]
-    time_left: str
     short_string: Optional[str]
 
     @classmethod
     def _from_response(cls: "Cetus", response: _CetusRecord) -> Self:
         return cls(
-            activation=datetime.datetime.fromisoformat(response["activation"])
+            activation=datetime.datetime.fromisoformat(response.get("activation"))
             if "activation" in response
             else None,
-            expiry=datetime.datetime.fromisoformat(response["expiry"])
-            if "expiry" in response
-            else None,
+            expiry=datetime.datetime.fromisoformat(response.get("expiry")),
             start_string=response.get("startString"),
             active=response.get("active"),
             is_day=response.get("isDay"),

@@ -18,7 +18,7 @@ class WorldstateObject(ABC):
 
 
 @dataclass(frozen=True, order=True)
-class Node:
+class StarchartNode:
     node: str
     node_key: str
 
