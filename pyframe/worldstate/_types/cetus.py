@@ -6,6 +6,9 @@ from typing_extensions import Self
 
 from .base import WorldstateObject, Record
 
+__all__ = [
+    "Cetus"   
+]
 
 class _CetusRecord(Record):
     # required
@@ -38,10 +41,10 @@ class Cetus(WorldstateObject):
     @classmethod
     def _from_response(cls: "Cetus", response: _CetusRecord) -> Self:
         return cls(
-            activation=datetime.datetime.fromisoformat(response.get("activation"))
+            activation=datetime.datetime.fromisoformat(response.get("activation").strip("Z"))
             if "activation" in response
             else None,
-            expiry=datetime.datetime.fromisoformat(response.get("expiry")),
+            expiry=datetime.datetime.fromisoformat(response.get("expiry").strip("Z")),
             start_string=response.get("startString"),
             active=response.get("active"),
             is_day=response.get("isDay"),

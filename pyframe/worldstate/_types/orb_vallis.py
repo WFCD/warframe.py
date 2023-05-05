@@ -6,6 +6,9 @@ from typing_extensions import Self
 
 from .base import WorldstateObject, Record
 
+__all__ = [
+    "OrbVallis"
+]
 
 class _OrbVallisRecord(Record):
     # required
@@ -33,10 +36,10 @@ class OrbVallis(WorldstateObject):
     @classmethod
     def _from_response(cls: "OrbVallis", response: _OrbVallisRecord) -> Self:
         return cls(
-            activation=datetime.datetime.fromisoformat(response.get("activation"))
+            activation=datetime.datetime.fromisoformat(response.get("activation").strip("Z"))
             if "activation" in response
             else None,
-            expiry=datetime.datetime.fromisoformat(response.get("expiry")),
+            expiry=datetime.datetime.fromisoformat(response.get("expiry").strip("Z")),
             time_left=response.get("timeLeft"),
             is_warm=response.get("isWarm"),
             state=response.get("state"),

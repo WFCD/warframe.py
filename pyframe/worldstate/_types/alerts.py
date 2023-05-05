@@ -8,6 +8,10 @@ from .base import Record, WorldstateObject, StarchartNode, Faction, MissionType
 
 # TODO: IMPLEMENT REWARDS to be another type (https://docs.warframestat.us/#tag/Worldstate/operation/getAlertsByPlatform)
 
+__all__ = [
+    "AlertMission",
+    "Alert"
+]
 
 class _AlertMissionRecord(Record):
     reward: ...
@@ -118,7 +122,7 @@ class Alert(WorldstateObject):
                 )
                 if "activation" in response_item
                 else None,
-                expiry=datetime.datetime.fromisoformat(response_item.get("expiry"))
+                expiry=datetime.datetime.fromisoformat(response_item.get("expiry").strip("Z"))
                 if "expiry" in response_item
                 else None,
                 start_string=response_item.get("startString"),

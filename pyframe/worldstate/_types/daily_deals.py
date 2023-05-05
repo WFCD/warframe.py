@@ -6,6 +6,9 @@ from typing_extensions import Self
 
 from .base import WorldstateObject, Record
 
+__all__ = [
+    "DailyDeal"   
+]
 
 class _DailyDealRecord(Record):
     # required
@@ -48,7 +51,7 @@ class DailyDeal(WorldstateObject):
                 original_price=response_item.get("originalPrice"),
                 sales_price=response_item.get("salePrice"),
                 discount=response_item.get("discount"),
-                expiry=datetime.datetime.fromisoformat(response_item.get("expiry")),
+                expiry=datetime.datetime.fromisoformat(response_item.get("expiry").strip("Z")),
                 activation=datetime.datetime.fromisoformat(
                     response_item.get("activation")
                 )

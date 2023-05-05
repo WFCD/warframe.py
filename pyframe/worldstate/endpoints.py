@@ -2,6 +2,9 @@ from enum import Enum
 
 base_url = "https://api.warframestat.us/pc"
 
+__all__ = [
+    "Language"
+]
 
 class Endpoint(Enum):
     # Open Worlds

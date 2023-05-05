@@ -5,6 +5,9 @@ from typing_extensions import Self
 
 from .base import Record, WorldstateObject
 
+__all__ = [
+    "FlashSale"   
+]
 
 class _FlashSaleRecord(Record):
     # required

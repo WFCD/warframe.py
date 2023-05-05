@@ -6,6 +6,9 @@ from ._types import CambionDrift, Cetus, OrbVallis
 from .endpoints import Endpoint, Language, build_enpoint
 from .exceptions import WorldstateAPIError
 
+__all__ = [
+    "WorldstateClient"
+]
 
 class WorldstateClient:
     """
