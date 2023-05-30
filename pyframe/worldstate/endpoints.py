@@ -1,47 +1,46 @@
 from enum import Enum
 
-base_url = "https://api.warframestat.us/pc"
+BASE_URL = "https://api.warframestat.us/pc"
 
-__all__ = [
-    "Language"
-]
+__all__ = ["Language"]
+
 
 class Endpoint(Enum):
     # Open Worlds
-    CETUS = f"{base_url}/cetusCycle"
-    CAMBION_DRIFT = f"{base_url}/cambionCycle"
-    ORB_VALLIS = f"{base_url}/vallisCycle"
+    CETUS = "/cetusCycle"
+    CAMBION_DRIFT = "/cambionCycle"
+    ORB_VALLIS = "/vallisCycle"
 
     # Darvo
-    DAILY_DEAL = f"{base_url}/dailyDeals"
-    FLASH_SALES = f"{base_url}/flashSales"
+    DAILY_DEAL = "/dailyDeals"
+    FLASH_SALES = "/flashSales"
 
     # Alert related
-    ALERTS = f"{base_url}/alerts"
-    ARBITRATION = f"{base_url}/arbitration"
-    INVASIONS = f"{base_url}/invasions"
-    VOID_TRADER = f"{base_url}/voidTrader"
-    EVENTS = f"{base_url}/events"
-    NEWS = f"{base_url}/news"
+    ALERTS = "/alerts"
+    ARBITRATION = "/arbitration"
+    INVASIONS = "/invasions"
+    VOID_TRADER = "/voidTrader"
+    EVENTS = "/events"
+    NEWS = "/news"
 
     # Daily stuff
-    ARCHON_HUNT = f"{base_url}/archonHunt"
-    STEEL_PATH = f"{base_url}/steelPath"
-    SORTIE = f"{base_url}/sortie"
+    ARCHON_HUNT = "/archonHunt"
+    STEEL_PATH = "/steelPath"
+    SORTIE = "/sortie"
 
     # Misc
-    CONCLAVE = f"{base_url}/conclaveChallenges"
-    CONSTRUCTION_PROGRESS = f"{base_url}/constructionProgress"
-    EARTH_CYCLE = f"{base_url}/earthCycle"
-    FISSURES = f"{base_url}/fissures"
-    GLOBAL_UPGRADES = f"{base_url}/globalUpgrades"  # don't really know what this is for
-    KUVA_MISSIONS = f"{base_url}/kuva"
-    NIGHTWAVE = f"{base_url}/nightwave"
-    PERSISTENT_ENEMIES = f"{base_url}/persistentEnemies"
-    RIVENS = f"{base_url}/rivens"
-    SENTIENT_OUTPOST = f"{base_url}/sentientOutposts"
-    SANCTUARY = f"{base_url}/simaris"
-    SYNDICATE_MISSIONS = f"{base_url}/syndicateMissions"
+    CONCLAVE = "/conclaveChallenges"
+    CONSTRUCTION_PROGRESS = "/constructionProgress"
+    EARTH_CYCLE = "/earthCycle"
+    FISSURES = "/fissures"
+    GLOBAL_UPGRADES = "/globalUpgrades"  # don't really know what this is for
+    KUVA_MISSIONS = "/kuva"
+    NIGHTWAVE = "/nightwave"
+    PERSISTENT_ENEMIES = "/persistentEnemies"
+    RIVENS = "/rivens"
+    SENTIENT_OUTPOST = "/sentientOutposts"
+    SANCTUARY = "/simaris"
+    SYNDICATE_MISSIONS = "/syndicateMissions"
 
 
 class Language(Enum):
@@ -70,5 +69,5 @@ class Language(Enum):
     Ukrainian = UK
 
 
-def build_enpoint(endpoint: Endpoint, language: Language = Language.EN):
-    return f"{endpoint.value}/?language={language.value}"
+def build_endpoint(endpoint: Endpoint, language: Language = Language.EN):
+    return f"{BASE_URL}{endpoint.value}/?language={language.value}"

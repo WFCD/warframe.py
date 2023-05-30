@@ -2,13 +2,12 @@ from typing import Coroutine
 
 import aiohttp
 
-from ._types import CambionDrift, Cetus, OrbVallis
-from .endpoints import Endpoint, Language, build_enpoint
+from .reponse_models import CambionDrift, Cetus, OrbVallis
+from .endpoints import Endpoint, Language, build_endpoint
 from .exceptions import WorldstateAPIError
 
-__all__ = [
-    "WorldstateClient"
-]
+__all__ = ["WorldstateClient"]
+
 
 class WorldstateClient:
     """
@@ -23,7 +22,7 @@ class WorldstateClient:
         self._debug = False
 
     async def _request(self, endpoint: Endpoint, language: Language) -> dict:
-        endpoint = build_enpoint(endpoint, language)
+        endpoint = build_endpoint(endpoint, language)
 
         if self._debug:
             print(f"[WorldstateClient DEBUG] Sending request to {endpoint}...")
