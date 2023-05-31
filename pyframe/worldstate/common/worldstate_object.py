@@ -16,9 +16,8 @@ def _from_worldstate_date_str(date_str: str) -> datetime:
 class WorldstateObject(ABC):
     @classmethod
     def _from_response(
-        cls: Type[T], response: Dict[str, Any], config: Optional[Config] = None
+        cls: Type[T], response: Dict[str, Any], config: Optional[Config] = Config()
     ) -> Self:
-        config = config or Config()
         if datetime not in config.type_hooks.keys():
             config.type_hooks[datetime] = _from_worldstate_date_str
         return from_dict(data_class=cls, data=response, config=config)
