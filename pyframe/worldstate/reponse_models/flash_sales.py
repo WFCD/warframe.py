@@ -20,5 +20,4 @@ class FlashSale(WorldstateObject):
     # optional
     expired: Optional[bool]
     isShownInMarket: Optional[bool]
-    eta: Optional[str]
     expiry: Optional[datetime]

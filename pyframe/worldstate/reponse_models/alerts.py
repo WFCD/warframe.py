@@ -8,7 +8,7 @@ from ..common import WorldstateObject, Mission, ItemRewardType
 
 # TODO: IMPLEMENT REWARDS to be another type (https://docs.warframestat.us/#tag/Worldstate/operation/getAlertsByPlatform)
 
-__all__ = ["AlertMission", "Alert"]
+__all__ = ["Alert"]
 
 
 @dataclass(frozen=True, order=True)
