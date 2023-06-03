@@ -1,10 +1,14 @@
-from typing import Any, Dict, List, Optional, Type, TypeVar
+from typing import TypeVar
 
 from msgspec import field
 
 from .common import WorldstateObject
 
-__all__ = ["WorldstateAPIError", "WorldstateError"]
+__all__ = [
+    "WorldstateAPIError",
+    "WorldstateError",
+    "UnsupportedSingleError",
+]
 
 T = TypeVar("T")
 

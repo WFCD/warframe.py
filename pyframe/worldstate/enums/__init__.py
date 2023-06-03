@@ -1,2 +1,2 @@
-from .faction import Faction
-from .mission_type import MissionType
+from .faction import *
+from .mission_type import *

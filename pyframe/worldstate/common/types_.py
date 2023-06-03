@@ -1,5 +1,7 @@
 from typing import Literal
 
+__all__ = ["ItemRewardType"]
+
 ItemRewardType = Literal[
     "vauban",
     "vandal",

@@ -1,9 +1,10 @@
-from dataclasses import dataclass
 from typing import List, Optional
 
 from .base_objects import WorldstateObject
 from ..enums import Faction, MissionType
 from .mission_reward import MissionReward
+
+__all__ = ["Mission"]
 
 
 class Mission(WorldstateObject):

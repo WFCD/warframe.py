@@ -1,5 +1,7 @@
 from enum import Enum
 
+__all__ = ["MissionType"]
+
 
 class MissionType(Enum):
     AncientRetribution = "Ancient Retribution"

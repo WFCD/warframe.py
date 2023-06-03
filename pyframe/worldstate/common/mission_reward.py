@@ -1,8 +1,9 @@
-from dataclasses import dataclass
 from typing import List
 
 from .base_objects import WorldstateObject
 from .counted_item import CountedItem
+
+__all__ = ["MissionReward"]
 
 
 class MissionReward(WorldstateObject):
