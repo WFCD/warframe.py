@@ -1,45 +1,45 @@
 from dataclasses import dataclass
 from typing import List, Optional
 
-from .worldstate_object import WorldstateObject
+from .base_objects import WorldstateObject
 from ..enums import Faction, MissionType
+from .mission_reward import MissionReward
 
 
-@dataclass(frozen=True, order=True)
 class Mission(WorldstateObject):
     # required
-    reward: ...
+    reward: MissionReward
     "The mission's reward"
     node: str
     "The localized node string"
     faction: Faction
     "The Faction of the mission"
-    maxEnemyLevel: int
-    minEnemyLevel: int
-    maxWaveNum: int
+    max_enemy_level: int
+    min_enemy_level: int
+    max_wave_num: int
     type: MissionType
     "The MissionType of the given mission (Capture, Spy, etc.)"
     nightmare: bool
     "Whether the mission is a nightmare mission"
-    archwingRequired: bool
+    archwing_required: bool
     "Whether an archwing is required in order to play the mission"
     description: str
     "The mission's description"
 
     # optional
-    isSharkwing: Optional[bool]
+    is_sharkwing: Optional[bool] = None
     "Whether the mission takes place in a submerssible mission"
-    enemySpec: Optional[str]
+    enemy_spec: Optional[str] = None
     "Enemy specification for the mission"
-    levelOverride: Optional[str]
+    level_override: Optional[str] = None
     "Override for the map on this mission"
-    advancedSpawners: Optional[List[str]]
+    advanced_spawners: Optional[List[str]] = None
     "Array of strings denoting extra spawners for a mission"
-    requiredItems: Optional[List[str]]
+    required_items: Optional[List[str]] = None
     "Items required to enter the mission"
-    consumeRequiredItems: Optional[bool]
+    consume_required_items: Optional[bool] = None
     "Whether the required items are consumed"
-    leadersAlwaysAllowed: Optional[bool]
+    leaders_always_allowed: Optional[bool] = None
     "Whether leaders are always allowed"
-    levelAuras: Optional[List[str]]
+    level_auras: Optional[List[str]] = None
     "Affectors for this mission"

@@ -1,8 +1,33 @@
-__all__ = [
-    "WorldstateAPIError"
-]
+from typing import Any, Dict, List, Optional, Type, TypeVar
 
-class WorldstateAPIError(Exception):
-    def __init__(self, message: str, *args: object) -> None:
+from msgspec import field
+
+from .common import WorldstateObject
+
+__all__ = ["WorldstateAPIError", "WorldstateError"]
+
+T = TypeVar("T")
+
+
+class ErrorMessage(WorldstateObject):
+    message: str = field(name="error")
+    code: int
+
+
+class WorldstateError(Exception):
+    def __init__(self, *args: object) -> None:
         super().__init__(*args)
-        self.message = message
+
+
+class WorldstateAPIError(WorldstateError):
+    def __init__(self, error_message: ErrorMessage, *args) -> None:
+        super().__init__(*args)
+        self.error_message: ErrorMessage = error_message
+
+
+class UnsupportedSingleError(WorldstateError):
+    pass
+
+
+class UnsupportedManyError(WorldstateError):
+    pass

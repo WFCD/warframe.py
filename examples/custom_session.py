@@ -2,7 +2,8 @@ import asyncio
 
 import aiohttp  # comes with this package
 
-from pyframe import Language, WorldstateClient
+from pyframe.worldstate import Language, WorldstateClient
+
 
 # to use a custom session for the client, use the following:
 async def main():
@@ -10,8 +11,7 @@ async def main():
         # pass `session` to WorldstateClient
         async with WorldstateClient(session=session) as client:
             cetus = await client.get_cetus(language=Language.English)
-            print(cetus.__dict__)
-
+            print(cetus.activation, cetus.is_day)
 
 
 if __name__ == "__main__":

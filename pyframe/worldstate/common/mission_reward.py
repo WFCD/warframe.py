@@ -1,13 +1,13 @@
 from dataclasses import dataclass
 from typing import List
 
-from .worldstate_object import WorldstateObject
+from .base_objects import WorldstateObject
 from .counted_item import CountedItem
 
 
 class MissionReward(WorldstateObject):
     # required
-    countedItems: List[CountedItem]
+    counted_items: List[CountedItem]
     "Items that have a quantity attached"
     thumbnail: str
     "Thumbnail URL"
@@ -15,9 +15,9 @@ class MissionReward(WorldstateObject):
     "RGB value as an int assigned to this reward"
     credits: int
     "Amount of credits awarded"
-    asString: str
+    as_string: str
     "String representation of the reward"
     items: List[str]
     "Items' names possible to be won"
-    itemString: str
+    item_string: str
     "formatted string describing all included items"
