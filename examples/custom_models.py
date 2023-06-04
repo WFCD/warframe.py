@@ -27,7 +27,6 @@ class CustomCambionDrift(SingleQueryModel):
     time_remaining: Optional[str] = field(name="timeLeft", default=None)
 
 
-# to use a custom session for the client, use the following:
 async def main():
     async with WorldstateClient() as client:
         arbi = await client.query(CustomCambionDrift)
