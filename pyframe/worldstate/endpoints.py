@@ -1,7 +1,6 @@
 from enum import Enum
-from typing import Type
 
-from .enums.language import Language
+from .enums import Language
 
 BASE_URL = "https://api.warframestat.us/pc"
 

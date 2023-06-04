@@ -1,6 +1,6 @@
 import asyncio
 
-from pyframe.worldstate import WorldstateClient, Language
+from pyframe.worldstate import Language, WorldstateClient
 from pyframe.worldstate.models import Arbitration
 
 

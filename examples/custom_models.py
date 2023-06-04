@@ -2,12 +2,12 @@ import asyncio
 from datetime import datetime
 from typing import Literal, Optional
 
+from msgspec import field  # use this to rename response keys
+
 from pyframe.worldstate import WorldstateClient
 from pyframe.worldstate.common.base_objects import (
     SingleQueryModel,
 )  # this import might change
-
-from msgspec import field  # use this to rename response keys
 
 
 class CustomCambionDrift(SingleQueryModel):

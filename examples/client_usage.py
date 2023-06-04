@@ -1,6 +1,6 @@
 import asyncio
 
-from pyframe.worldstate import WorldstateClient, Language
+from pyframe.worldstate import Language, WorldstateClient
 
 
 async def main():
