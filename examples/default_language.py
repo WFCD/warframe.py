@@ -4,7 +4,6 @@ from pyframe.worldstate import Language, WorldstateClient
 from pyframe.worldstate.models import Arbitration
 
 
-# to use a custom session for the client, use the following:
 async def main():
     async with WorldstateClient(
         default_language=Language.ZH  # set the default language to chinese here
