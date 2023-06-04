@@ -2,18 +2,20 @@ from typing import TypeVar
 
 from msgspec import field
 
-from .common import WorldstateObject
+from .common import WorldstateObject, SingleQueryModel
 
 __all__ = [
     "WorldstateAPIError",
     "WorldstateError",
-    "UnsupportedSingleError",
+    "UnsupportedSingleQueryError",
 ]
 
 T = TypeVar("T")
 
 
-class ErrorMessage(WorldstateObject):
+class ErrorMessage(SingleQueryModel):
+    __endpoint__ = ""
+
     message: str = field(name="error")
     code: int
 
@@ -29,9 +31,13 @@ class WorldstateAPIError(WorldstateError):
         self.error_message: ErrorMessage = error_message
 
 
-class UnsupportedSingleError(WorldstateError):
+class UnsupportedSingleQueryError(WorldstateError):
     pass
 
 
-class UnsupportedManyError(WorldstateError):
+class UnsupportedMultiQueryError(WorldstateError):
+    pass
+
+
+class SessionNotFound(WorldstateError):
     pass

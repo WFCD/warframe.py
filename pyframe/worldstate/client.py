@@ -2,19 +2,21 @@ from typing import List, Optional, Type, TypeVar
 
 import aiohttp
 
-from .common import SupportsMany, SupportsSingle, WorldstateObject
-from .endpoints import Endpoint, Language, build_endpoint, endpoint_from_type
+from .common import MultiQueryModel, SingleQueryModel, WorldstateObject
+from .endpoints import Language, build_endpoint
 from .exceptions import (
     ErrorMessage,
-    UnsupportedManyError,
-    UnsupportedSingleError,
+    UnsupportedMultiQueryError,
+    UnsupportedSingleQueryError,
     WorldstateAPIError,
+    SessionNotFound,
 )
 from .models import CambionDrift, Cetus, OrbVallis, Alert
 
 __all__ = ["WorldstateClient"]
 
-W = TypeVar("W", bound=WorldstateObject)
+SupportsSingleQuery = TypeVar("SupportsSingleQuery", bound=SingleQueryModel)
+SupportsMultiQuery = TypeVar("SupportsMultiQuery", bound=MultiQueryModel)
 
 
 class WorldstateClient:
@@ -23,9 +25,15 @@ class WorldstateClient:
     Instantiate with an asynchronous context manager.
     """
 
-    def __init__(self, *, session: Optional[aiohttp.ClientSession] = None) -> None:
+    def __init__(
+        self,
+        *,
+        session: Optional[aiohttp.ClientSession] = None,
+        default_language: Language = Language.EN,
+    ) -> None:
         self._session = session
         self._session_created = False
+        self._default_lang = default_language
 
         self._debug = False
 
@@ -33,9 +41,11 @@ class WorldstateClient:
     # Request
     #
 
-    async def _request(self, endpoint: Endpoint, language: Language) -> str:
+    async def _request(self, endpoint: str, language: Optional[Language]) -> str:
         if not self._session:
-            raise NotImplementedError
+            raise SessionNotFound("The WorldstateClient does not have a session.")
+
+        language = language or self._default_lang
 
         url = build_endpoint(endpoint, language)
 
@@ -57,49 +67,51 @@ class WorldstateClient:
     # Queries
     #
 
-    async def query(self, cls: Type[W], language: Language = Language.EN) -> W:
-        if not issubclass(cls, (WorldstateObject, SupportsSingle)):
-            raise UnsupportedSingleError(
-                f"{cls.__name__} is required to be of type WorldstateObject and SupportsSingle."
+    async def query(
+        self, cls: Type[SupportsSingleQuery], language: Optional[Language] = None
+    ) -> SupportsSingleQuery:
+        if not issubclass(cls, SingleQueryModel):
+            raise UnsupportedSingleQueryError(
+                f"{cls.__name__} is required to be of type WorldstateObject and SupportsSingleQuery."
             )
-        endpoint = endpoint_from_type(cls)
-        json = await self._request(endpoint, language)
+        json = await self._request(cls.__endpoint__, language)
 
         return cls._from_json(json)
 
-    async def query_many(
-        self, cls: Type[W], language: Language = Language.EN
-    ) -> Optional[List[W]]:
-        if not issubclass(cls, (WorldstateObject, SupportsMany)):
-            raise UnsupportedManyError(
-                f"{cls.__name__} is required to be of type WorldstateObject and SupportsMany."
+    async def query_list_of(
+        self, cls: Type[SupportsMultiQuery], language: Optional[Language] = None
+    ) -> Optional[List[SupportsMultiQuery]]:
+        if not issubclass(cls, MultiQueryModel):
+            raise UnsupportedMultiQueryError(
+                f"{cls.__name__} is required to be of type WorldstateObject and SupportsListQuery."
             )
-        endpoint = endpoint_from_type(cls)
-        json = await self._request(endpoint, language)
+        json = await self._request(cls.__endpoint__, language)
 
-        return cls._many_from_json(json)
+        return cls._from_json(json)
 
     #
     # Type-Specific commands
     #
 
-    async def get_cetus(self, language: Language = Language.EN) -> Cetus:
-        json = await self._request(Endpoint.Cetus, language)
+    async def get_cetus(self, language: Optional[Language] = None) -> Cetus:
+        json = await self._request(Cetus.__endpoint__, language)
         return Cetus._from_json(json)
 
-    async def get_cambion_drift(self, language: Language = Language.EN) -> CambionDrift:
-        json = await self._request(Endpoint.CambionDrift, language)
+    async def get_cambion_drift(
+        self, language: Optional[Language] = None
+    ) -> CambionDrift:
+        json = await self._request(CambionDrift.__endpoint__, language)
         return CambionDrift._from_json(json)
 
-    async def get_orb_vallis(self, language: Language = Language.EN) -> OrbVallis:
-        json = await self._request(Endpoint.OrbVallis, language)
+    async def get_orb_vallis(self, language: Optional[Language] = None) -> OrbVallis:
+        json = await self._request(OrbVallis.__endpoint__, language)
         return OrbVallis._from_json(json)
 
     async def get_alerts(
-        self, language: Language = Language.EN
+        self, language: Optional[Language] = None
     ) -> Optional[List[Alert]]:
-        json = await self._request(Endpoint.Alert, language)
-        return Alert._many_from_json(json)
+        json = await self._request(OrbVallis.__endpoint__, language)
+        return Alert._from_json(json)
 
     #
     # Context manager

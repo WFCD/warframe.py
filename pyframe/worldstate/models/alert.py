@@ -1,12 +1,14 @@
 from datetime import datetime
 from typing import List, Optional
 
-from ..common import ItemRewardType, Mission, SupportsMany, WorldstateObject
+from ..common import ItemRewardType, Mission, MultiQueryModel
 
 __all__ = ["Alert"]
 
 
-class Alert(WorldstateObject, SupportsMany):
+class Alert(MultiQueryModel):
+    __endpoint__ = "/alerts"
+
     # required
     mission: Mission
     "The mission that corresponds to this Alert."

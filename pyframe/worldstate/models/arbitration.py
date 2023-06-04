@@ -3,13 +3,15 @@ from typing import Optional
 
 from msgspec import field
 
-from ..common import SupportsSingle, WorldstateObject
+from ..common import SingleQueryModel
 from ..enums import Faction, MissionType
 
 __all__ = ["Arbitration"]
 
 
-class Arbitration(WorldstateObject, SupportsSingle):
+class Arbitration(SingleQueryModel):
+    __endpoint__ = "/arbitration"
+
     # required
     activation: datetime
     "The time the mission began."

@@ -1,12 +1,14 @@
 from datetime import datetime
 from typing import Literal, Optional
 
-from ..common import SupportsSingle, WorldstateObject
+from ..common import SingleQueryModel
 
 __all__ = ["OrbVallis"]
 
 
-class OrbVallis(WorldstateObject, SupportsSingle):
+class OrbVallis(SingleQueryModel):
+    __endpoint__ = "/vallisCycle"
+
     # required
     expiry: datetime
     time_left: str

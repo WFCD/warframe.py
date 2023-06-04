@@ -1,12 +1,14 @@
 from datetime import datetime
 from typing import Optional
 
-from ..common import SupportsMany, WorldstateObject
+from ..common import MultiQueryModel
 
 __all__ = ["DailyDeal"]
 
 
-class DailyDeal(WorldstateObject, SupportsMany):
+class DailyDeal(MultiQueryModel):
+    __endpoint__ = "/dailyDeals"
+
     # required
     sold: int
     item: str

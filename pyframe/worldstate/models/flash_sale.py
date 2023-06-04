@@ -3,12 +3,14 @@ from typing import Optional
 
 from msgspec import field
 
-from ..common import SupportsMany, WorldstateObject
+from ..common import MultiQueryModel
 
 __all__ = ["FlashSale"]
 
 
-class FlashSale(WorldstateObject, SupportsMany):
+class FlashSale(MultiQueryModel):
+    __endpoint__ = "/flashSales"
+
     # required
     item: str
     eta: str

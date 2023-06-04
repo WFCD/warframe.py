@@ -1,12 +1,14 @@
 from datetime import datetime
 from typing import Literal, Optional
 
-from ..common import SupportsSingle, WorldstateObject
+from ..common import SingleQueryModel
 
 __all__ = ["Cetus"]
 
 
-class Cetus(WorldstateObject, SupportsSingle):
+class Cetus(SingleQueryModel):
+    __endpoint__ = "/cetusCycle"
+
     # required
     expiry: datetime
     is_day: bool
