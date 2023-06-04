@@ -1,7 +1,8 @@
 from datetime import datetime
 from typing import List, Optional
 
-from ..common import ItemRewardType, Mission, MultiQueryModel
+from ..common import ItemRewardType, MultiQueryModel
+from .mission import Mission
 
 __all__ = ["Alert"]
 

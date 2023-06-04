@@ -30,6 +30,15 @@ class MultiQueryModel(WorldstateObject):
 
     @classmethod
     def _from_json(cls: Type[T], response: str) -> List[T]:
+        """Decodes a JSON string to an list of object of T.
+
+        Args:
+            cls (Type[T]): The type T.
+            response (str): The raw JSON as string.
+
+        Returns:
+            List[T]: A list of objects of T.
+        """
         return msgspec.json.decode(response, type=List[cls], dec_hook=_decode_hook)
 
 
@@ -40,4 +49,13 @@ class SingleQueryModel(WorldstateObject):
 
     @classmethod
     def _from_json(cls: Type[T], response: str) -> T:
+        """Decodes a JSON string to an object of T.
+
+        Args:
+            cls (Type[T]): The type T.
+            response (str): The raw JSON as string.
+
+        Returns:
+            T: The object of T
+        """
         return msgspec.json.decode(response, type=cls, dec_hook=_decode_hook)

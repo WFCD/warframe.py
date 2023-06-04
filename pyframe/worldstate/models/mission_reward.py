@@ -1,12 +1,12 @@
 from typing import List
 
-from .base_objects import WorldstateObject
+from ..common.base_objects import SingleQueryModel
 from .counted_item import CountedItem
 
 __all__ = ["MissionReward"]
 
 
-class MissionReward(WorldstateObject):
+class MissionReward(SingleQueryModel):
     # required
     counted_items: List[CountedItem]
     "Items that have a quantity attached"

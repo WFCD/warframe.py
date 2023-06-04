@@ -42,6 +42,19 @@ class WorldstateClient:
     #
 
     async def _request(self, endpoint: str, language: Optional[Language]) -> str:
+        """Sends a request to the given `endpoint` and returns its JSON content as string.
+
+        Args:
+            endpoint (str): The endpoint to send the request to.
+            language (Optional[Language]): The language of the response.
+
+        Raises:
+            SessionNotFound: When the client's session is gone / None for some reason.
+            WorldstateAPIError: When the API returns a faulty response.
+
+        Returns:
+            str: The JSON content as string.
+        """
         if not self._session:
             raise SessionNotFound("The WorldstateClient does not have a session.")
 
@@ -70,6 +83,18 @@ class WorldstateClient:
     async def query(
         self, cls: Type[SupportsSingleQuery], language: Optional[Language] = None
     ) -> SupportsSingleQuery:
+        """Queries the model of type `SingleQueryModel` to return its corresponding object.
+
+        Args:
+            cls (Type[SupportsSingleQuery]): The model to query.
+            language (Optional[Language], optional): The language to return the object in. Defaults to None.
+
+        Raises:
+            UnsupportedSingleQueryError: When the passed type `cls` is not a subclass of `SingleQueryModel`.
+
+        Returns:
+            SupportsSingleQuery: The queried model.
+        """
         if not issubclass(cls, SingleQueryModel):
             raise UnsupportedSingleQueryError(
                 f"{cls.__name__} is required to be of type SingleQueryModel."
@@ -81,6 +106,18 @@ class WorldstateClient:
     async def query_list_of(
         self, cls: Type[SupportsMultiQuery], language: Optional[Language] = None
     ) -> Optional[List[SupportsMultiQuery]]:
+        """Queries the model of type `MultiQueryModel` to return its corresponding object.
+
+        Args:
+            cls (Type[SupportsSingleQuery]): The model to query.
+            language (Optional[Language], optional): The language to return the object in. Defaults to None.
+
+        Raises:
+            UnsupportedSingleQueryError: When the passed type `cls` is not a subclass of `SingleQueryModel`.
+
+        Returns:
+            Optional[List[SupportsMultiQuery]]: A list of the queried model.
+        """
         if not issubclass(cls, MultiQueryModel):
             raise UnsupportedMultiQueryError(
                 f"{cls.__name__} is required to be of type MultiQueryModel."

@@ -1,13 +1,13 @@
 from typing import List, Optional
 
-from .base_objects import WorldstateObject
+from ..common.base_objects import SingleQueryModel
 from ..enums import Faction, MissionType
 from .mission_reward import MissionReward
 
 __all__ = ["Mission"]
 
 
-class Mission(WorldstateObject):
+class Mission(SingleQueryModel):
     # required
     reward: MissionReward
     "The mission's reward"
