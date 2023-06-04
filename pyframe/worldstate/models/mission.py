@@ -1,15 +1,15 @@
 from typing import List, Optional
 
-from ..common.base_objects import SingleQueryModel
+from ..common import SingleQueryModel
 from ..enums import Faction, MissionType
-from .mission_reward import MissionReward
+from .reward import Reward
 
 __all__ = ["Mission"]
 
 
 class Mission(SingleQueryModel):
     # required
-    reward: MissionReward
+    reward: Reward
     "The mission's reward"
     node: str
     "The localized node string"

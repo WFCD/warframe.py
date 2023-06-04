@@ -13,7 +13,6 @@ __all__ = ["Language"]
 class Endpoint(Enum):
     # Alert related
     Alert = "/alerts"  # still needs testing
-    Invasion = "/invasions"  # return type: list
 
     VoidTrader = "/voidTrader"
     """
@@ -22,7 +21,8 @@ class Endpoint(Enum):
     """
 
     Event = "/events"  # return type: list
-    News = "/news"  # return type: list
+    News = "/news"  # return type: list    active: Optional[bool] = None
+    "Whether the invasion is currently active"
 
     # Daily stuff
     ArchonHunt = "/archonHunt"
