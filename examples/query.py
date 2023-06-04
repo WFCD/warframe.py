@@ -7,9 +7,9 @@ from pyframe.worldstate import WorldstateClient
 from pyframe.worldstate.models import Arbitration
 
 
-# to use a custom session for the client, use the following:
 async def main():
     async with WorldstateClient() as client:
+        # import from models and pass the type you want the object of
         arbi = await client.query(Arbitration)
 
         print(arbi)
