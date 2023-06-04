@@ -72,7 +72,7 @@ class WorldstateClient:
     ) -> SupportsSingleQuery:
         if not issubclass(cls, SingleQueryModel):
             raise UnsupportedSingleQueryError(
-                f"{cls.__name__} is required to be of type WorldstateObject and SupportsSingleQuery."
+                f"{cls.__name__} is required to be of type SingleQueryModel."
             )
         json = await self._request(cls.__endpoint__, language)
 
@@ -83,7 +83,7 @@ class WorldstateClient:
     ) -> Optional[List[SupportsMultiQuery]]:
         if not issubclass(cls, MultiQueryModel):
             raise UnsupportedMultiQueryError(
-                f"{cls.__name__} is required to be of type WorldstateObject and SupportsListQuery."
+                f"{cls.__name__} is required to be of type MultiQueryModel."
             )
         json = await self._request(cls.__endpoint__, language)
 
