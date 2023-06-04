@@ -1,6 +1,6 @@
 from typing import Literal
 
-__all__ = ["ItemRewardType"]
+__all__ = ["ItemRewardType", "FissureTier", "FissureTierNumber"]
 
 ItemRewardType = Literal[
     "vauban",
@@ -47,3 +47,7 @@ ItemRewardType = Literal[
     "other",
     "credits",
 ]
+
+FissureTier = Literal["Lith", "Meso", "Neo", "Axi", "Requiem"]
+
+FissureTierNumber = Literal[1, 2, 3, 4, 5]

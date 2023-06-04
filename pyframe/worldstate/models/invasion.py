@@ -10,20 +10,22 @@ from .reward import Reward
 __all__ = ["Invasion"]
 
 
-class Defender(SingleQueryModel):
+class InvasionMember(SingleQueryModel):
     __endpoint__ = ""
 
     # optional
     reward: Optional[Reward] = None
+    "The reward of the mission."
     faction: Optional[Faction] = None
+    "The faction that houses the node/mission"
 
 
-class Attacker(SingleQueryModel):
-    __endpoint__ = ""
+class Defender(InvasionMember):
+    pass
 
-    # optional
-    reward: Optional[Reward] = None
-    faction: Optional[Faction] = None
+
+class Attacker(InvasionMember):
+    pass
 
 
 class Invasion(MultiQueryModel):

@@ -14,7 +14,7 @@ class Mission(SingleQueryModel):
     node: str
     "The localized node string"
     faction: Faction
-    "The Faction of the mission"
+    "The faction that houses the node/mission"
     max_enemy_level: int
     min_enemy_level: int
     max_wave_num: int

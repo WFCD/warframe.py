@@ -25,7 +25,6 @@ class Endpoint(Enum):
     Conclave = "/conclaveChallenges"
     ConstructionProgress = "/constructionProgress"
     EarthCycle = "/earthCycle"
-    Fissure = "/fissures"
     GlobalUpgrade = "/globalUpgrades"  # modifiers (like double res weekend)
     KuvaMission = "/kuva"
     Nightwave = "/nightwave"

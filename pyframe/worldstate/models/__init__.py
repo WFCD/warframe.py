@@ -10,3 +10,4 @@ from .reward import *
 from .mission import *
 from .invasion import *
 from .void_trader import *
+from .fissure import *
