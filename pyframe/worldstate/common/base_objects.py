@@ -3,7 +3,6 @@ from typing import Any, List, Type, TypeVar, ClassVar
 
 import msgspec
 
-T = TypeVar("T")
 
 __all__ = ["MultiQueryModel", "SingleQueryModel", "WorldstateObject"]
 
@@ -21,6 +20,9 @@ class WorldstateObject(msgspec.Struct, rename="camel"):
     """
 
     __endpoint__: ClassVar[str]
+
+
+T = TypeVar("T", bound=WorldstateObject)
 
 
 class MultiQueryModel(WorldstateObject):
