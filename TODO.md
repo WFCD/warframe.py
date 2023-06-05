@@ -1,3 +1,5 @@
 # TODO
 
-- Implement Item Types and classes
+- Implement all models/endpoints
+endpoints
+- Implement Item- hierarchy and types
