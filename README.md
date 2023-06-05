@@ -11,17 +11,21 @@ This library is in its *very* early states. I am willing to spend a long time on
 ```py
 import asyncio
 
-from pyframe import WorldstateClient, Language
+from pyframe.worldstate import Language, WorldstateClient
 
 
 async def main():
     async with WorldstateClient() as client:
-        cetus = await client.get_cetus(language=Language.English) # english is default
-        print(cetus.__dict__)
-
+        cetus = await client.get_cetus(language=Language.English)  # english is default
+        print(cetus.short_string)
 
 
 if __name__ == "__main__":
     loop = asyncio.new_event_loop()
     loop.run_until_complete(main())
+
 ```
+
+# Installing
+
+`pip install git+https://github.com/Mettwasser/pyframe.git`
