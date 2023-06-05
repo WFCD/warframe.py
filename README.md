@@ -29,3 +29,8 @@ if __name__ == "__main__":
 # Installing
 
 `pip install git+https://github.com/Mettwasser/pyframe.git`
+
+Supported python versions:
+- 3.11
+- 3.10
+- 3.9
