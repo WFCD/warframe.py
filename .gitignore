@@ -1,4 +1,4 @@
-venv/
+.venv/
 Formatter.txt
 __pycache__/
 .vscode

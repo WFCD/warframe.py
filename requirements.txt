@@ -1,3 +1,2 @@
-aiohttp
-typing_extensions
-msgspec
+aiohttp==3.8.4
+msgspec==0.15.1
