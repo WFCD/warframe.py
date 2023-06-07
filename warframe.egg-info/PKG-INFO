@@ -1,0 +1,14 @@
+Metadata-Version: 2.1
+Name: warframe
+Version: 0.1.0
+Summary: An asynchronous Python API wrapper for the Warframestat API and (later) the warframe.market API.
+Home-page: https://github.com/Mettwasser/warframe
+Author: Mettwasser
+License: MIT
+Keywords: Warframe API worldstate market wrapper
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Requires-Python: >=3.9.0
+License-File: LICENSE

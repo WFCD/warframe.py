@@ -1,7 +1,7 @@
 import asyncio
 
-from pyframe.worldstate import Language, WorldstateClient
-from pyframe.worldstate.models import Arbitration
+from warframe.worldstate import Language, WorldstateClient
+from warframe.worldstate.models import Arbitration
 
 
 async def main():

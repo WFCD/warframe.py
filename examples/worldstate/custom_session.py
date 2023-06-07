@@ -2,7 +2,7 @@ import asyncio
 
 import aiohttp  # comes with this package
 
-from pyframe.worldstate import Language, WorldstateClient
+from warframe.worldstate import Language, WorldstateClient
 
 
 # to use a custom session for the client, use the following:

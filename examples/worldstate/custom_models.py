@@ -4,8 +4,8 @@ from typing import Literal, Optional
 
 from msgspec import field  # use this to rename response keys
 
-from pyframe.worldstate import WorldstateClient
-from pyframe.worldstate.common.base_objects import (
+from warframe.worldstate import WorldstateClient
+from warframe.worldstate.common.base_objects import (
     SingleQueryModel,
 )  # this import might change
 

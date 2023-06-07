@@ -5,12 +5,12 @@ with open("requirements.txt") as reqs_file:
     requirements = reqs_file.readlines()
 
 setup(
-    name="pyframe",
+    name="warframe",
     version="0.1.0",
     author="Mettwasser",
-    url="https://github.com/Mettwasser/pyframe",
+    url="https://github.com/Mettwasser/warframe",
     description="An asynchronous Python API wrapper for the Warframestat API and (later) the warframe.market API.",
-    packages=find_namespace_packages(include=["pyframe*"]),
+    packages=find_namespace_packages(include=["warframe*"]),
     install_requires=requirements,
     license="MIT",
     python_requires=">=3.9.0",

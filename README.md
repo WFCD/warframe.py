@@ -1,4 +1,4 @@
-# pyframe
+# warframe.py
 
 An asynchronous Python API wrapper for [the Warframestat API](https://hub.warframestat.us) and (later) [the warframe.market API](https://warframe.market/api_docs).
 
@@ -10,7 +10,7 @@ This library is in its early states. I am willing to spend a long time on this p
 ```py
 import asyncio
 
-from pyframe.worldstate import Language, WorldstateClient
+from warframe.worldstate import Language, WorldstateClient
 
 
 async def main():
@@ -27,7 +27,7 @@ if __name__ == "__main__":
 
 # Installing
 
-`pip install git+https://github.com/Mettwasser/pyframe.git`
+`pip install git+https://github.com/Mettwasser/warframe.git`
 
 Supported python versions:
 - 3.11

@@ -3,8 +3,8 @@
 
 import asyncio
 
-from pyframe.worldstate import WorldstateClient
-from pyframe.worldstate.models import Arbitration
+from warframe.worldstate import WorldstateClient
+from warframe.worldstate.models import Arbitration
 
 
 async def main():

@@ -21,7 +21,7 @@ SupportsMultiQuery = TypeVar("SupportsMultiQuery", bound=MultiQueryModel)
 
 class WorldstateClient:
     """
-    The Pyframe Client for the worldstate API.
+    The warframe.py Client for the worldstate API.
     Instantiate with an asynchronous context manager.
     """
 
