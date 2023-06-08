@@ -44,6 +44,7 @@ To install the library, use the following command:
     pip install warframe.py
 
 Supported python versions:
+
 - 3.11
 - 3.10
 - 3.9
