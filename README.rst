@@ -6,6 +6,9 @@ warframe.py
 .. image:: https://img.shields.io/pypi/pyversions/warframe.py.svg
    :target: https://pypi.python.org/pypi/warframe.py
    :alt: PyPI supported Python versions
+.. image:: https://img.shields.io/badge/semantic--release-angular-e10079?logo=semantic-release
+   :target: https://github.com/semantic-release/semantic-release
+   :alt: semantic-release: angular
 
 An asynchronous Python API wrapper for `the Warframestat API <https://hub.warframestat.us>`__ and (later) `the warframe.market API <https://warframe.market/api_docs>`__.
 
