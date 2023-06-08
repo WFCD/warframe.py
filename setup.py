@@ -1,15 +1,21 @@
+import os
+
 from setuptools import find_namespace_packages, setup
 
+with open(os.path.join(os.path.dirname(__file__), "requirements.txt")) as reqs_file:
+    requirements = reqs_file.read().splitlines()
 
-with open("requirements.txt") as reqs_file:
-    requirements = reqs_file.readlines()
+with open("README.rst") as readme_file:
+    readme = readme_file.read()
 
 setup(
-    name="warframe",
-    version="0.1.0",
+    name="warframe.py",
+    version="0.1.2",
     author="Mettwasser",
-    url="https://github.com/Mettwasser/warframe",
+    url="https://github.com/WFCD/warframe.py",
     description="An asynchronous Python API wrapper for the Warframestat API and (later) the warframe.market API.",
+    long_description=readme,
+    long_description_content_type="text/x-rst",
     packages=find_namespace_packages(include=["warframe*"]),
     install_requires=requirements,
     license="MIT",
