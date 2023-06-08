@@ -1,0 +1,30 @@
+name: Release
+on:
+  push:
+    branches:
+      -  main
+jobs:
+  semantic-release:
+    runs-on: ubuntu-latest
+    # wait until test & lint complete
+    # needs: ['lint', 'test']
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          persist-credentials: false
+          token: ${{ secrets.GH_TOKEN }}
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 'lts/hydrogen'
+          cache: 'npm'
+      - name: Semantic Release
+        id: release
+        uses: cycjimmy/semantic-release-action@v3
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          PYPI_TOKEN: ${{ PYPI_TOKEN }}
+        with:
+          extra_plugins: |
+            @semantic-release/git
+            @semantic-release/changelog
+            semantic-release-python

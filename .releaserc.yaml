@@ -1,0 +1,11 @@
+plugins:
+  - "@semantic-release/commit-analyzer"
+  - "@semantic-release/release-notes-generator"
+  - - "@semantic-release/changelog"
+    - assets: [ "CHANGELOG.md" ]
+  - "semantic-release-python"
+  - "@semantic-release/github"
+  - - "@semantic-release/git"
+    - assets: ["CHANGELOG.md"]
+branches:
+  - main
