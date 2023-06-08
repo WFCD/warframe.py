@@ -13,10 +13,6 @@ jobs:
         with:
           persist-credentials: false
           token: ${{ secrets.GH_TOKEN }}
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 'lts/hydrogen'
-          cache: 'npm'
       - name: Semantic Release
         id: release
         uses: cycjimmy/semantic-release-action@v3
