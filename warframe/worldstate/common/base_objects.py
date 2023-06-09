@@ -19,7 +19,7 @@ class WorldstateObject(msgspec.Struct, rename="camel"):
     Base class for every model-related object.
     """
 
-    __endpoint__: ClassVar[str]
+    pass
 
 
 T = TypeVar("T", bound=WorldstateObject)
@@ -29,6 +29,8 @@ class MultiQueryModel(WorldstateObject):
     """
     Base class for giving models an indicator whether they can only come from a JSON array.
     """
+
+    __endpoint__: ClassVar[str]
 
     @classmethod
     def _from_json(cls: Type[T], response: str) -> List[T]:
@@ -48,6 +50,8 @@ class SingleQueryModel(WorldstateObject):
     """
     Base class for giving models an indicator whether they can only come from a single JSON object.
     """
+
+    __endpoint__: ClassVar[str]
 
     @classmethod
     def _from_json(cls: Type[T], response: str) -> T:
