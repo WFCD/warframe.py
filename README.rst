@@ -15,7 +15,7 @@ An asynchronous Python API wrapper for `the Warframestat API <https://hub.warfra
 What to expect
 --------------
 
-This library is in its early states. I am willing to spend a long time on this project to make it the best and most up-to-date Python Warframe API wrapper.
+This library is in its early states. The goal is to make it the best and most up-to-date Python Warframe API wrapper.
 
 Quickstart
 ----------
