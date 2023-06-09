@@ -16,15 +16,25 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 'lts/hydrogen'
-          cache: 'npm'
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+      - run: pip install -r requirements.txt
+      - run: pip install twine setuptools wheel
+      - name: install dependencies
+        env:
+          SEMANTIC_PYTHON_POST_INSTALL: 'false'
+        run: npm i --no-save semantic-release-python
       - name: Semantic Release
         id: release
-        uses: cycjimmy/semantic-release-action@v3
+        uses: cycjimmy/semantic-release-action@v3.2.0
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-          PYPI_TOKEN: ${{ PYPI_TOKEN }}
+          PYPI_TOKEN: ${{ secrets.PYPI_TOKEN }}
         with:
+          semantic_version: 18
           extra_plugins: |
             @semantic-release/git
             @semantic-release/changelog
-            semantic-release-python
+            semantic-release-pypi

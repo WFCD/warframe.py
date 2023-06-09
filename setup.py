@@ -10,7 +10,6 @@ with open("README.rst") as readme_file:
 
 setup(
     name="warframe.py",
-    version="0.1.3",
     author="Mettwasser",
     url="https://github.com/WFCD/warframe.py",
     description="An asynchronous Python API wrapper for the Warframestat API and (later) the warframe.market API.",

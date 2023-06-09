@@ -3,9 +3,9 @@ plugins:
   - "@semantic-release/release-notes-generator"
   - - "@semantic-release/changelog"
     - assets: [ "CHANGELOG.md" ]
-  - "semantic-release-python"
+  - "semantic-release-pypi"
   - "@semantic-release/github"
   - - "@semantic-release/git"
-    - assets: ["CHANGELOG.md"]
+    - assets: ["CHANGELOG.md", "setup.cfg"]
 branches:
   - main
