@@ -1,8 +1,9 @@
 from typing import List, Optional, Type, TypeVar
 
 import aiohttp
+import msgspec
 
-from .common import MultiQueryModel, SingleQueryModel, WorldstateObject
+from .common import MultiQueryModel, SingleQueryModel
 from .endpoints import Language, build_endpoint
 from .exceptions import (
     ErrorMessage,
@@ -69,7 +70,9 @@ class WorldstateClient:
             response_text = await response.text()
 
             if response.status != 200:
-                raise WorldstateAPIError(ErrorMessage._from_json(response_text))
+                raise WorldstateAPIError(
+                    msgspec.json.decode(response_text, type=ErrorMessage)
+                )
 
             if self._debug:
                 print(f"[WorldstateClient DEBUG] Got request:\n{response_text}")
