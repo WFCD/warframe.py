@@ -13,15 +13,13 @@ __all__ = ["Language"]
 class Endpoint(Enum):
     # Alert related
     Alert = "/alerts"  # still needs testing
+    Event = "/events"  # incomplete, needs testing
 
-    Event = "/events"
     News = "/news"
-    # Daily stuff
+
     ArchonHunt = "/archonHunt"
     SteelPath = "/steelPath"
-    Sortie = "/sortie"
 
-    # Misc
     Conclave = "/conclaveChallenges"
     ConstructionProgress = "/constructionProgress"
     EarthCycle = "/earthCycle"
