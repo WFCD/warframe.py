@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Any, List, Type, TypeVar, ClassVar
+from typing import Any, List, Optional, Type, TypeVar, ClassVar
 
 import msgspec
 
@@ -19,7 +19,7 @@ class WorldstateObject(msgspec.Struct, rename="camel"):
     Base class for every model-related object.
     """
 
-    __endpoint__: ClassVar[str]
+    __endpoint__: ClassVar[Optional[str]] = None
 
 
 T = TypeVar("T", bound=WorldstateObject)
