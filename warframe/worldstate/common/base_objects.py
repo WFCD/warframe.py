@@ -19,7 +19,7 @@ class WorldstateObject(msgspec.Struct, rename="camel"):
     Base class for every model-related object.
     """
 
-    __endpoint__: ClassVar[Optional[str]] = None
+    __endpoint__: ClassVar[str]
 
 
 T = TypeVar("T", bound=WorldstateObject)
