@@ -13,9 +13,7 @@ __all__ = [
 T = TypeVar("T")
 
 
-class ErrorMessage(SingleQueryModel):
-    __endpoint__ = ""
-
+class ErrorMessage(WorldstateObject):
     message: str = field(name="error")
     code: int
 

@@ -3,14 +3,12 @@ from typing import List, Optional
 
 from msgspec import field
 
-from ..common import SingleQueryModel
+from ..common import SingleQueryModel, WorldstateObject
 
 __all__ = ["VoidTrader"]
 
 
-class InventoryItem(SingleQueryModel):
-    __endpoint__ = ""
-
+class InventoryItem(WorldstateObject):
     item: str
     "The item that is being sold"
     ducats: int
