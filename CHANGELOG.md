@@ -1,3 +1,10 @@
+## [0.3.2](https://github.com/WFCD/warframe.py/compare/v0.3.1...v0.3.2) (2023-06-10)
+
+
+### Bug Fixes
+
+* Alerts now work. ([8960b7f](https://github.com/WFCD/warframe.py/commit/8960b7f3ceed272c36e29db7cafb0e19cf2dcf94))
+
 ## [0.3.1](https://github.com/WFCD/warframe.py/compare/v0.3.0...v0.3.1) (2023-06-10)
 
 
