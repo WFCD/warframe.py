@@ -12,3 +12,5 @@ from .invasion import *
 from .void_trader import *
 from .fissure import *
 from .archon_hunt import *
+from .sortie import *
+from .event import *

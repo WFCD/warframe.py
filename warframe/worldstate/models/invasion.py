@@ -3,16 +3,14 @@ from typing import List, Optional
 
 from msgspec import field
 
-from ..common import ItemRewardType, MultiQueryModel, SingleQueryModel
+from ..common import ItemRewardType, MultiQueryModel, WorldstateObject
 from ..enums import Faction
 from .reward import Reward
 
 __all__ = ["Invasion"]
 
 
-class InvasionMember(SingleQueryModel):
-    __endpoint__ = ""
-
+class InvasionMember(WorldstateObject):
     # optional
     reward: Optional[Reward] = None
     "The reward of the mission."
