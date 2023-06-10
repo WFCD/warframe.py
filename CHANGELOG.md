@@ -1,3 +1,10 @@
+## [0.3.1](https://github.com/WFCD/warframe.py/compare/v0.3.0...v0.3.1) (2023-06-10)
+
+
+### Bug Fixes
+
+* Added docs to all attributes, removed some useless ones ([e1fa1b9](https://github.com/WFCD/warframe.py/commit/e1fa1b96d09e300eca7de2f5e5ec91e21874578e))
+
 # [0.3.0](https://github.com/WFCD/warframe.py/compare/v0.2.0...v0.3.0) (2023-06-10)
 
 
