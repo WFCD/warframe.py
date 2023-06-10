@@ -11,8 +11,13 @@ class CambionDrift(SingleQueryModel):
 
     # required
     expiry: datetime
+    "The time the Cycle ends"
+
     activation: datetime
+    "The time the new rotation of the cycle started"
+
     state: Literal["vome", "fass"]
+    'The state of the Cambion Drift. ("vome" or "fass")'
 
     # optional
     time_left: Optional[str] = None
