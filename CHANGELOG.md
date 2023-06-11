@@ -1,3 +1,10 @@
+## [0.3.3](https://github.com/WFCD/warframe.py/compare/v0.3.2...v0.3.3) (2023-06-11)
+
+
+### Bug Fixes
+
+* renamed base_objects to core ([#6](https://github.com/WFCD/warframe.py/issues/6)) ([4b33b6a](https://github.com/WFCD/warframe.py/commit/4b33b6a7305ce2b377a5449332bfb39e8b364879))
+
 ## [0.3.2](https://github.com/WFCD/warframe.py/compare/v0.3.1...v0.3.2) (2023-06-10)
 
 
