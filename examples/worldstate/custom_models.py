@@ -5,7 +5,7 @@ from typing import Literal, Optional
 from msgspec import field  # use this to rename response keys
 
 from warframe.worldstate import WorldstateClient
-from warframe.worldstate.common.base_objects import (
+from warframe.worldstate.common.core import (
     SingleQueryModel,
 )  # this import might change
 
@@ -29,9 +29,9 @@ class CustomCambionDrift(SingleQueryModel):
 
 async def main():
     async with WorldstateClient() as client:
-        arbi = await client.query(CustomCambionDrift)
+        ccd = await client.query(CustomCambionDrift)
 
-        print(arbi)
+        print(ccd)
 
 
 if __name__ == "__main__":

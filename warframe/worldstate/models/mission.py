@@ -19,7 +19,10 @@ class Mission(SingleQueryModel):
     faction: Faction
     "The faction that houses the node/mission"
 
-    type: MissionType
+    type: str
+    "The localized MissionType of the given mission (Capture, Spy, etc.)"
+
+    type_key: MissionType
     "The MissionType of the given mission (Capture, Spy, etc.)"
 
     nightmare: bool

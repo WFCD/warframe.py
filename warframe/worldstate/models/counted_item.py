@@ -1,4 +1,4 @@
-from ..common.base_objects import SingleQueryModel
+from ..common import SingleQueryModel
 
 __all__ = ["CountedItem"]
 
