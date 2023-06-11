@@ -1,5 +1,11 @@
 # TODO
 
+Model refactor:
+
+- Refactor invasions as soon as the endpoint is fixed, if it's an endpoint problem
+
+Else:
+
 - Implement all models/endpoints
 endpoints
 - Implement Item- hierarchy and types:
