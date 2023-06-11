@@ -108,7 +108,7 @@ class WorldstateClient:
 
     async def query_list_of(
         self, cls: Type[SupportsMultiQuery], language: Optional[Language] = None
-    ) -> Optional[List[SupportsMultiQuery]]:
+    ) -> List[SupportsMultiQuery]:
         """Queries the model of type `MultiQueryModel` to return its corresponding object.
 
         Args:

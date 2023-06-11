@@ -5,24 +5,14 @@ from msgspec import field
 
 from .reward import Reward
 
-from ..common import MultiQueryModel
+from ..common import MultiQueryModel, TimedEvent
 from ..enums import MissionType, Faction, Syndicate
 
 __all__ = ["Event"]
 
 
-class Event(MultiQueryModel):
-    activation: Optional[datetime] = None
-    "The time the Event started"
-
-    expiry: Optional[datetime] = None
-    "The time the Event"
-
-    start_string: Optional[str] = None
-    "Short-time-formatted duration string of the start of the Fissure"
-
-    active: Optional[bool] = None
-    "Whether the event is currently active"
+class Event(MultiQueryModel, TimedEvent):
+    __endpoint__ = "/events"
 
     maximum_score: Optional[int] = None
     "Maximum score to complete the event"

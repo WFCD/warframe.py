@@ -1,23 +1,13 @@
-from datetime import datetime
-from typing import Literal, Optional
+from typing import Literal
 
-from ..common import SingleQueryModel
+from ..common import SingleQueryModel, TimedEvent
 
 __all__ = ["CambionDrift"]
 
 
-class CambionDrift(SingleQueryModel):
+class CambionDrift(SingleQueryModel, TimedEvent):
     __endpoint__ = "/cambionCycle"
 
     # required
-    expiry: datetime
-    "The time the Cycle ends"
-
-    activation: datetime
-    "The time the new rotation of the cycle started"
-
     state: Literal["vome", "fass"]
     'The state of the Cambion Drift. ("vome" or "fass")'
-
-    # optional
-    time_left: Optional[str] = None

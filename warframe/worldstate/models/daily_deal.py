@@ -1,12 +1,9 @@
-from datetime import datetime
-from typing import Optional
-
-from ..common import MultiQueryModel
+from ..common import MultiQueryModel, TimedEvent
 
 __all__ = ["DailyDeal"]
 
 
-class DailyDeal(MultiQueryModel):
+class DailyDeal(MultiQueryModel, TimedEvent):
     __endpoint__ = "/dailyDeals"
 
     # required
@@ -30,9 +27,3 @@ class DailyDeal(MultiQueryModel):
 
     discount: int
     "The discount as %"
-
-    expiry: datetime
-    "The time the Daily Deal ends ends"
-
-    # optional
-    activation: Optional[datetime] = None
