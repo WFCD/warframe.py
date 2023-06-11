@@ -14,6 +14,31 @@ def _decode_hook(type: Type, obj: Any) -> Any:
     return obj
 
 
+def get_start_string(activation: datetime) -> str:
+    """Returns an short time formatted string based on the activation.
+
+    Args:
+        activation (datetime): The time the Event XYZ started
+
+    Returns:
+        str: The short time formatted string of the time in between now and when the event started.
+    """
+    time_in_between = datetime.now() - activation
+
+    days = time_in_between.days
+    hours, remainder = divmod(time_in_between.seconds, 3600)
+    minutes, seconds = divmod(remainder, 60)
+
+    time_components = [(days, "d"), (hours, "h"), (minutes, "m"), (seconds, "s")]
+    formatted_time = ""
+
+    for t, suffix in time_components:
+        if t != 0:
+            formatted_time += f"{t}{suffix} "
+
+    return formatted_time.strip()
+
+
 class WorldstateObject(msgspec.Struct, rename="camel"):
     """
     Base class for every model-related object.
