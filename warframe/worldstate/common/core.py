@@ -1,10 +1,10 @@
-from datetime import datetime
-from typing import Any, List, Optional, Type, TypeVar, ClassVar
+from datetime import datetime, timezone
+from typing import Any, List, Type, TypeVar, ClassVar
 
 import msgspec
 
 
-__all__ = ["MultiQueryModel", "SingleQueryModel", "WorldstateObject"]
+__all__ = ["MultiQueryModel", "SingleQueryModel", "WorldstateObject", "TimedEvent"]
 
 
 def _decode_hook(type: Type, obj: Any) -> Any:
@@ -14,16 +14,17 @@ def _decode_hook(type: Type, obj: Any) -> Any:
     return obj
 
 
-def get_start_string(activation: datetime) -> str:
-    """Returns an short time formatted string based on the activation.
+def _get_short_format_time_string(dt: datetime) -> str:
+    """Returns a short time formatted string based on the now and the dt.
 
     Args:
-        activation (datetime): The time the Event XYZ started
+        dt (datetime): The time the Event XYZ started/ends
 
     Returns:
-        str: The short time formatted string of the time in between now and when the event started.
+        str: The short time formatted string of the time in between now and when the dt.
     """
-    time_in_between = datetime.now() - activation
+    now = datetime.now(tz=timezone.utc)
+    time_in_between = now - dt if now > dt else dt - now
 
     days = time_in_between.days
     hours, remainder = divmod(time_in_between.seconds, 3600)
@@ -37,6 +38,32 @@ def get_start_string(activation: datetime) -> str:
             formatted_time += f"{t}{suffix} "
 
     return formatted_time.strip()
+
+
+class TimedEvent(msgspec.Struct, rename="camel"):
+    activation: datetime
+    "The time the event began"
+
+    expiry: datetime
+    "The time the event ends"
+
+    @property
+    def start_string(self) -> str:
+        "Short-time-formatted duration string representing the start of the event"
+        return f"{_get_short_format_time_string(self.activation)} ago"
+
+    @property
+    def eta(self) -> str:
+        "Short-time-formatted duration string representing the end of the event / cycle"
+        return _get_short_format_time_string(self.expiry)
+
+    @property
+    def expired(self) -> bool:
+        return self.activation >= self.expiry
+
+    @property
+    def active(self) -> bool:
+        return not self.expired
 
 
 class WorldstateObject(msgspec.Struct, rename="camel"):
