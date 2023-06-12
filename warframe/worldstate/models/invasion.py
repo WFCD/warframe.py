@@ -62,16 +62,17 @@ class Invasion(MultiQueryModel):
 
     vs_infested: bool = field(name="vsInfestation")
     "Whether the fight is against infested enemies"
+
     attacker: Attacker
     "The invading faction information"
 
     defender: Defender
     "The defending faction information"
 
-    # optional
     start_string: Optional[str] = None
     "Short-time-formatted duration string of the start of the Invasion"
 
+    # optional
     active: Optional[bool] = None
     "Whether the invasion is currently active"
 
