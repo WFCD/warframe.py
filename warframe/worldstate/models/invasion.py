@@ -73,8 +73,5 @@ class Invasion(MultiQueryModel):
     "Short-time-formatted duration string of the start of the Invasion"
 
     # optional
-    active: Optional[bool] = None
-    "Whether the invasion is currently active"
-
     reward_types: Optional[List[ItemRewardType]] = None
     "A list of reward types"
