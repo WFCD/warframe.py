@@ -69,9 +69,8 @@ class Invasion(MultiQueryModel):
     defender: Defender
     "The defending faction information"
 
-    start_string: Optional[str] = None
+    start_string: str
     "Short-time-formatted duration string of the start of the Invasion"
 
-    # optional
-    reward_types: Optional[List[ItemRewardType]] = None
+    reward_types: List[ItemRewardType]
     "A list of reward types"
