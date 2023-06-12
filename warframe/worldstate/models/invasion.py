@@ -69,9 +69,6 @@ class Invasion(MultiQueryModel):
     "The defending faction information"
 
     # optional
-    expiry: Optional[datetime] = None
-    "The time the Invasion ends"
-
     start_string: Optional[str] = None
     "Short-time-formatted duration string of the start of the Invasion"
 
