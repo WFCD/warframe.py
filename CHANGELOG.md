@@ -1,3 +1,13 @@
+## [0.3.4](https://github.com/WFCD/warframe.py/compare/v0.3.3...v0.3.4) (2023-06-12)
+
+
+### Bug Fixes
+
+* made reward_types non-optional ([e803f01](https://github.com/WFCD/warframe.py/commit/e803f0117e7070473677c04ad7f718ff19e1dd99))
+* Made start_string non-optional ([87d8fd7](https://github.com/WFCD/warframe.py/commit/87d8fd77c863db8468019e27e00c06b87f02cf4d))
+* Removed `expiry` from invasions ([50cf61e](https://github.com/WFCD/warframe.py/commit/50cf61ece12333d03a63f0e9ed13c66b2f28b0ad))
+* Removed active, since it cannot be in the responses ([68b0f88](https://github.com/WFCD/warframe.py/commit/68b0f8831f2229269a3add077bc5b23325dc911a))
+
 ## [0.3.3](https://github.com/WFCD/warframe.py/compare/v0.3.2...v0.3.3) (2023-06-11)
 
 

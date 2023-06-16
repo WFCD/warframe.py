@@ -62,21 +62,15 @@ class Invasion(MultiQueryModel):
 
     vs_infested: bool = field(name="vsInfestation")
     "Whether the fight is against infested enemies"
+
     attacker: Attacker
     "The invading faction information"
 
     defender: Defender
     "The defending faction information"
 
-    # optional
-    expiry: Optional[datetime] = None
-    "The time the Invasion ends"
-
-    start_string: Optional[str] = None
+    start_string: str
     "Short-time-formatted duration string of the start of the Invasion"
 
-    active: Optional[bool] = None
-    "Whether the invasion is currently active"
-
-    reward_types: Optional[List[ItemRewardType]] = None
+    reward_types: List[ItemRewardType]
     "A list of reward types"
