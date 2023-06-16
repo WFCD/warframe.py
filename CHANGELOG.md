@@ -1,3 +1,10 @@
+## [0.3.5](https://github.com/WFCD/warframe.py/compare/v0.3.4...v0.3.5) (2023-06-16)
+
+
+### Bug Fixes
+
+* Added node_key to Fissure ([1ef72b0](https://github.com/WFCD/warframe.py/commit/1ef72b0a0b8519bdb03fcf789e56f027f6b6332c))
+
 ## [0.3.4](https://github.com/WFCD/warframe.py/compare/v0.3.3...v0.3.4) (2023-06-12)
 
 
