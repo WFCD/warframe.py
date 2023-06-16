@@ -14,6 +14,9 @@ class Fissure(MultiQueryModel, TimedEvent):
     "The localized node string"
 
     node: str
+    "The localized node string"
+
+    node_key: str
     "The node string"
 
     mission_type: str
@@ -36,5 +39,6 @@ class Fissure(MultiQueryModel, TimedEvent):
 
     is_steel_path: bool = field(name="isHard")
     "Whether the mission of the Fissure is on is on the Steel Path"
+
     is_railjack: bool = field(name="isStorm")
     "Whether the mssion of the Fissure is a Railjack mission"
