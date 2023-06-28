@@ -2,12 +2,13 @@ from typing import TypeVar
 
 from msgspec import field
 
-from .common import WorldstateObject, SingleQueryModel
+from .common import WorldstateObject
 
 __all__ = [
     "WorldstateAPIError",
     "WorldstateError",
     "UnsupportedSingleQueryError",
+    "UnsupportedTypeError",
 ]
 
 T = TypeVar("T")
@@ -38,4 +39,8 @@ class UnsupportedMultiQueryError(WorldstateError):
 
 
 class SessionNotFound(WorldstateError):
+    pass
+
+
+class UnsupportedTypeError(WorldstateError):
     pass
