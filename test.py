@@ -1,6 +1,3 @@
-# queries are just another way to get the data to the corresponding objects.
-# this is really just personal preference.
-
 import asyncio
 from typing import Any, Callable, Coroutine
 
@@ -16,10 +13,8 @@ async def on_arbi_state_change(cetus: Cetus) -> None:
 
 
 async def main():
-    print((await client.get_cetus()))
     on_arbi_state_change.start()
-    while True:
-        await asyncio.sleep(2)  # Run the program for 10 minutes
+    await asyncio.sleep(600)
 
 
 if __name__ == "__main__":

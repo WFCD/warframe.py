@@ -71,10 +71,6 @@ class WorldstateClient:
         self._session = session
         self._session_created = False
 
-        if not self._session:
-            self._session = aiohttp.ClientSession()
-            self._session_created = True
-
         self._default_lang = default_language
 
         self._debug = True
@@ -98,7 +94,11 @@ class WorldstateClient:
             str: The JSON content as string.
         """
         if not self._session:
-            raise SessionNotFound("The WorldstateClient does not have a session.")
+            self._session = aiohttp.ClientSession()
+            self._session_created = True
+
+        if self._session.closed:
+            raise SessionNotFound("The WorldstateClient's session is closed.")
 
         language = language or self._default_lang
 
@@ -247,6 +247,10 @@ class WorldstateClient:
     #
 
     async def __aenter__(self) -> "WorldstateClient":
+        if not self._session:
+            self._session = aiohttp.ClientSession()
+            self._session_created = True
+
         return self
 
     async def __aexit__(self, exc_type, exception, traceback):
