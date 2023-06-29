@@ -1,31 +1,14 @@
 import asyncio
-from datetime import datetime
+from datetime import datetime, timezone
 from functools import wraps
-from typing import (
-    Any,
-    Callable,
-    Coroutine,
-    List,
-    NamedTuple,
-    Optional,
-    Type,
-    TypeVar,
-    Union,
-)
+from typing import Any, Callable, Coroutine, List, NamedTuple, Optional, Type, TypeVar
 
 import aiohttp
 import msgspec
 
 from .common import MultiQueryModel, SingleQueryModel, TimedEvent
 from .endpoints import Language, build_endpoint
-from .exceptions import (
-    ErrorMessage,
-    SessionNotFound,
-    UnsupportedMultiQueryError,
-    UnsupportedSingleQueryError,
-    UnsupportedTypeError,
-    WorldstateAPIError,
-)
+from .exceptions import ErrorMessage, SessionNotFound, WorldstateAPIError
 from .models import Alert, CambionDrift, Cetus, OrbVallis
 
 __all__ = ["WorldstateClient"]
@@ -38,21 +21,17 @@ IsTimed = TypeVar("IsTimed", bound=TimedEvent)
 
 class _TaskHelper:
     def __init__(self, loop: Callable[..., Coroutine[Any, Any, None]]) -> None:
-        self._loop = loop
+        self._loop_function = loop
         self._task: Optional[asyncio.Task] = None
 
     def start(self) -> None:
         if self._task is None:
-            self._task = asyncio.ensure_future(self._loop())
+            self._task = asyncio.create_task(self._loop_function())
 
     def stop(self) -> None:
         if self._task:
             self._task.cancel()
-
-
-class _TriggerContext(NamedTuple):
-    seconds: int
-    timedevent: Type[TimedEvent]
+            self._task = None
 
 
 class WorldstateClient:
@@ -73,7 +52,7 @@ class WorldstateClient:
 
         self._default_lang = default_language
 
-        self._debug = True
+        self._debug = False
 
     #
     # Request
@@ -140,7 +119,7 @@ class WorldstateClient:
             SupportsSingleQuery: The queried model.
         """
         if not issubclass(cls, SingleQueryModel):
-            raise UnsupportedSingleQueryError(
+            raise TypeError(
                 f"{cls.__name__} is required to be of type SingleQueryModel."
             )
         json = await self._request(cls.__endpoint__, language)
@@ -163,7 +142,7 @@ class WorldstateClient:
             Optional[List[SupportsMultiQuery]]: A list of the queried model.
         """
         if not issubclass(cls, MultiQueryModel):
-            raise UnsupportedMultiQueryError(
+            raise TypeError(
                 f"{cls.__name__} is required to be of type MultiQueryModel."
             )
         json = await self._request(cls.__endpoint__, language)
@@ -198,42 +177,54 @@ class WorldstateClient:
     # Event-hook related
     #
 
-    async def _get_next_trigger(self, type: Type[IsTimed]) -> _TriggerContext:
-        item: Type[TimedEvent] = await self.query(
-            type  # type: ignore
-        )  # needs to be here, else it wont accept the type. This us guaranteed to be, cause of the check in the decorator
-        return _TriggerContext((datetime.now() - item.expiry).seconds, item)
-
     def listen_to(self, type: Type[IsTimed]):
-        if not issubclass(type, SingleQueryModel) and not issubclass(type, TimedEvent):
-            raise UnsupportedTypeError(
+        if not issubclass(type, (SingleQueryModel, TimedEvent)):
+            raise TypeError(
                 f"{type.__name__} has to implement SingleQueryModel and TimedEvent"
             )
 
         def decorator(func: Callable[..., Coroutine[Any, Any, None]]) -> _TaskHelper:
             @wraps(func)
             async def inner() -> None:
+                item: Optional[TimedEvent] = None  # type: ignore
                 while True:
-                    is_retrying = False
                     try:
-                        seconds, item = await self._get_next_trigger(type)
-                        # check if the event is over, if so, retry in 1 minute
-                        if seconds <= 0:
-                            seconds = 60
-                            is_retrying = True
+                        # first cycle
+                        if item is None:
+                            item: TimedEvent = await self.query(type)  # type: ignore
+
+                        # check if the event is over, if so, retry in 1 minute (API doesn't refresh at the exact point of expiry)
+                        if item.expiry <= datetime.now(tz=timezone.utc):
                             if self._debug:
                                 print(
                                     f"[WorldstateClient DEBUG : listener : {type}] Retry started. Looking for state change from the API"
                                 )
 
+                            await asyncio.sleep(60)
+
+                            new_item: TimedEvent = await self.query(type)  # type: ignore
+
+                            if item.expiry < new_item.expiry:
+                                # we now know that it is a different event, so we can call the callback function
+                                # with the new item after the last one's expiry
+                                await func(new_item)
+
+                                # we called the function, so we need to update the "last used item"
+                                item = new_item
+
+                        # calculate seconds until next event triggers
+                        seconds_to_wait = (
+                            item.expiry - datetime.now(tz=timezone.utc)
+                        ).total_seconds()
+
                         if self._debug:
                             print(
-                                f"[WorldstateClient DEBUG : listener : {type}] Sleeping {seconds} seconds"
+                                f"[WorldstateClient DEBUG : listener : {type}] Sleeping {seconds_to_wait} seconds"
                             )
-                        await asyncio.sleep(seconds)
-
-                        if not is_retrying:
-                            await func(item)
+                        await asyncio.sleep(
+                            seconds_to_wait
+                            + 1  # to avoid slight offsets resulting in this part being called a ton of times
+                        )
 
                     except asyncio.CancelledError:
                         break

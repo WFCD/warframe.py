@@ -7,8 +7,6 @@ from .common import WorldstateObject
 __all__ = [
     "WorldstateAPIError",
     "WorldstateError",
-    "UnsupportedSingleQueryError",
-    "UnsupportedTypeError",
 ]
 
 T = TypeVar("T")
@@ -30,17 +28,5 @@ class WorldstateAPIError(WorldstateError):
         self.error_message: ErrorMessage = error_message
 
 
-class UnsupportedSingleQueryError(WorldstateError):
-    pass
-
-
-class UnsupportedMultiQueryError(WorldstateError):
-    pass
-
-
 class SessionNotFound(WorldstateError):
-    pass
-
-
-class UnsupportedTypeError(WorldstateError):
     pass
