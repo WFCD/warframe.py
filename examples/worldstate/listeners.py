@@ -1,7 +1,7 @@
 import asyncio
 
 from warframe.worldstate import WorldstateClient
-from warframe.worldstate.models import OrbVallis, Cetus
+from warframe.worldstate.models import Cetus, OrbVallis
 
 # define client
 client = WorldstateClient()
@@ -9,7 +9,6 @@ client = WorldstateClient()
 
 # listed to any type of SingleQueryModel and TimedEvent
 @client.listen_to(OrbVallis)  # decorate with the listen_to(type) function
-# also note that due to some technical issues, listen_to only checks for `TimedEvent`
 # this function will be called if the state of the Type changes
 async def on_vallis_state_change(
     vallis: OrbVallis,  # this function will be called if the state of the Type changes
@@ -45,5 +44,4 @@ async def main():
 
 if __name__ == "__main__":
     loop = asyncio.new_event_loop()
-    asyncio.set_event_loop(loop)
     loop.run_until_complete(main())

@@ -1,12 +1,23 @@
 import asyncio
 from datetime import datetime, timezone
 from functools import wraps
-from typing import Any, Callable, Coroutine, List, NamedTuple, Optional, Type, TypeVar
+from typing import (
+    Any,
+    Callable,
+    ClassVar,
+    Coroutine,
+    List,
+    NamedTuple,
+    Optional,
+    Protocol,
+    Type,
+    TypeVar,
+)
 
 import aiohttp
 import msgspec
 
-from .common import MultiQueryModel, SingleQueryModel, TimedEvent
+from .common import MultiQueryModel, SingleQueryModel, TimedEvent, WorldstateObject
 from .endpoints import Language, build_endpoint
 from .exceptions import ErrorMessage, SessionNotFound, WorldstateAPIError
 from .models import Alert, CambionDrift, Cetus, OrbVallis
@@ -15,8 +26,6 @@ __all__ = ["WorldstateClient"]
 
 SupportsSingleQuery = TypeVar("SupportsSingleQuery", bound=SingleQueryModel)
 SupportsMultiQuery = TypeVar("SupportsMultiQuery", bound=MultiQueryModel)
-
-IsTimed = TypeVar("IsTimed", bound=TimedEvent)
 
 
 class _TaskHelper:
@@ -32,6 +41,41 @@ class _TaskHelper:
         if self._task:
             self._task.cancel()
             self._task = None
+
+
+T = TypeVar("T", bound=WorldstateObject)
+
+
+class _SingleQueryTimedEvent(Protocol):
+    __endpoint__: ClassVar[str]
+
+    activation: datetime
+    "The time the event began"
+
+    expiry: datetime
+    "The time the event ends"
+
+    @property
+    def start_string(self) -> str:  # type: ignore
+        "Short-time-formatted duration string representing the start of the event"
+        pass
+
+    @property
+    def eta(self) -> str:  # type: ignore
+        "Short-time-formatted duration string representing the end of the event / cycle"
+        pass
+
+    @property
+    def expired(self) -> bool:  # type: ignore
+        pass
+
+    @property
+    def active(self) -> bool:  # type: ignore
+        pass
+
+    @classmethod
+    def _from_json(cls: Type[T], response: str) -> T:  # type: ignore
+        pass
 
 
 class WorldstateClient:
@@ -177,7 +221,7 @@ class WorldstateClient:
     # Event-hook related
     #
 
-    def listen_to(self, type: Type[IsTimed]):
+    def listen_to(self, type: Type[_SingleQueryTimedEvent]):
         """A decorator that makes a function an event listener. This will trigger on state changes (e.g. on Cetus: Day -> Night / Night -> Day)
 
         Args:
