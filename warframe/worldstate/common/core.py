@@ -1,6 +1,5 @@
-import asyncio
 from datetime import datetime, timezone
-from typing import Any, Callable, ClassVar, Coroutine, List, Optional, Type, TypeVar
+from typing import Any, ClassVar, List, Type, TypeVar
 
 import msgspec
 

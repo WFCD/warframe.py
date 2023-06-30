@@ -52,7 +52,7 @@ class WorldstateClient:
 
         self._default_lang = default_language
 
-        self._debug = False
+        self._debug = True
 
     #
     # Request
@@ -178,7 +178,20 @@ class WorldstateClient:
     #
 
     def listen_to(self, type: Type[IsTimed]):
-        if not issubclass(type, (SingleQueryModel, TimedEvent)):
+        """A decorator that makes a function an event listener. This will trigger on state changes (e.g. on Cetus: Day -> Night / Night -> Day)
+
+        Args:
+            type (Type[IsTimed]): Any type that inherits SingleQueryObject and TimedEvent
+
+        Raises:
+            TypeError: If the type requirements are not met
+
+        Returns:
+            _TaskHelper: A helper class that wraps the callback function. Call `.start()` on it in order to start the listener. Same goes for `.stop()`
+        """
+        if not issubclass(type, SingleQueryModel) and not not issubclass(
+            type, TimedEvent
+        ):
             raise TypeError(
                 f"{type.__name__} has to implement SingleQueryModel and TimedEvent"
             )

@@ -1,8 +1,7 @@
 import asyncio
-from typing import Any, Callable, Coroutine
 
 from warframe.worldstate import WorldstateClient
-from warframe.worldstate.models import Arbitration, Cetus, OrbVallis
+from warframe.worldstate.models import OrbVallis, Cetus
 
 # define client
 client = WorldstateClient()
@@ -10,11 +9,22 @@ client = WorldstateClient()
 
 # listed to any type of SingleQueryModel and TimedEvent
 @client.listen_to(OrbVallis)  # decorate with the listen_to(type) function
-async def on_arbi_state_change(
-    vallis: OrbVallis,
-) -> None:  # this function will be called if the state of the Type changes
+# also note that due to some technical issues, listen_to only checks for `TimedEvent`
+# this function will be called if the state of the Type changes
+async def on_vallis_state_change(
+    vallis: OrbVallis,  # this function will be called if the state of the Type changes
+) -> None:
     print("-" * 20)
+    print("ORB VALLIS")
     print(vallis)
+    print("-" * 20)
+
+
+@client.listen_to(Cetus)
+async def on_cetus_state_change(cetus: Cetus):
+    print("-" * 20)
+    print("CETUS")
+    print(cetus)
     print("-" * 20)
 
 
@@ -22,9 +32,15 @@ async def main():
     print(
         (await client.query(OrbVallis))
     )  # this is just to have a reference to the current state
-    on_arbi_state_change.start()  # start the listener
+    print(
+        (await client.query(Cetus))
+    )  # this is just to have a reference to the current state
+    on_vallis_state_change.start()  # start the listener
+    on_cetus_state_change.start()
     await asyncio.sleep(3600)  # for testing, we wait an hour here
-    on_arbi_state_change.stop()  # after an hour we stop the listener
+    on_vallis_state_change.stop()  # after an hour we stop the listener
+    on_cetus_state_change.stop()
+    await client.close()
 
 
 if __name__ == "__main__":
