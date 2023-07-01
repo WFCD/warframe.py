@@ -1,3 +1,10 @@
+# [0.4.0](https://github.com/WFCD/warframe.py/compare/v0.3.5...v0.4.0) (2023-07-01)
+
+
+### Features
+
+* state listeners for types that inherit TimedEvent and SingleQueryModel ([#8](https://github.com/WFCD/warframe.py/issues/8)) ([73862fe](https://github.com/WFCD/warframe.py/commit/73862feaf43dc27788ebcdce4ee2537830b1b495))
+
 ## [0.3.5](https://github.com/WFCD/warframe.py/compare/v0.3.4...v0.3.5) (2023-06-16)
 
 
