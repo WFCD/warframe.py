@@ -10,7 +10,7 @@ warframe.py
    :target: https://github.com/semantic-release/semantic-release
    :alt: semantic-release: angular
 
-An asynchronous Python API wrapper for `the Warframestat API <https://hub.warframestat.us>`__ and (later) `the warframe.market API <https://warframe.market/api_docs>`__.
+An asynchronous and typed Python API wrapper for `the Warframestat API <https://hub.warframestat.us>`__ and (later) `the warframe.market API <https://warframe.market/api_docs>`__.
 
 What to expect
 --------------
