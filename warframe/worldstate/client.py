@@ -7,7 +7,6 @@ from typing import (
     ClassVar,
     Coroutine,
     List,
-    NamedTuple,
     Optional,
     Protocol,
     Type,
@@ -17,7 +16,13 @@ from typing import (
 import aiohttp
 import msgspec
 
-from .common import MultiQueryModel, SingleQueryModel, TimedEvent, WorldstateObject
+from .common import (
+    MultiQueryModel,
+    SingleQueryModel,
+    TimedEvent,
+    WorldstateLogger,
+    WorldstateObject,
+)
 from .endpoints import Language, build_endpoint
 from .exceptions import ErrorMessage, SessionNotFound, WorldstateAPIError
 from .models import Alert, CambionDrift, Cetus, OrbVallis
@@ -26,6 +31,12 @@ __all__ = ["WorldstateClient"]
 
 SupportsSingleQuery = TypeVar("SupportsSingleQuery", bound=SingleQueryModel)
 SupportsMultiQuery = TypeVar("SupportsMultiQuery", bound=MultiQueryModel)
+
+
+def _get_default_logger() -> WorldstateLogger:
+    logger = WorldstateLogger("main_wsclient_logger")
+
+    return logger
 
 
 class _TaskHelper:
@@ -90,32 +101,53 @@ class WorldstateClient:
         *,
         session: Optional[aiohttp.ClientSession] = None,
         default_language: Language = Language.EN,
+        logger: Optional[WorldstateLogger] = None,
     ) -> None:
+        """
+        Parameters
+        ----------
+        session : Optional[aiohttp.ClientSession], optional
+            The `aiohttp.ClientSession` the client will perform the requests on, by default None
+        default_language : Language, optional
+            The default language the objects will be in, by default `Language.EN`
+        logger : Optional[WorldstateLogger], optional
+            The logger that will log messages, by default None
+        """
         self._session = session
         self._session_created = False
 
         self._default_lang = default_language
 
-        self._debug = True
+        self._logger = logger or _get_default_logger()
 
     #
     # Request
     #
 
     async def _request(self, endpoint: str, language: Optional[Language]) -> str:
-        """Sends a request to the given `endpoint` and returns its JSON content as string.
-
-        Args:
-            endpoint (str): The endpoint to send the request to.
-            language (Optional[Language]): The language of the response.
-
-        Raises:
-            SessionNotFound: When the client's session is gone / None for some reason.
-            WorldstateAPIError: When the API returns a faulty response.
-
-        Returns:
-            str: The JSON content as string.
         """
+        Sends a request to the given `endpoint` and returns its JSON content as string.
+
+        Parameters
+        ----------
+        endpoint : str
+            The endpoint to send the request to.
+        language : Optional[Language], optional
+            The language of the response, by default None
+
+        Raises
+        ------
+        SessionNotFound
+            When the client's session is gone / None for some reason.
+        WorldstateAPIError
+            When the API returns a faulty response.
+
+        Returns
+        -------
+        str
+            The JSON content as string.
+        """
+
         if not self._session:
             self._session = aiohttp.ClientSession()
             self._session_created = True
@@ -127,8 +159,7 @@ class WorldstateClient:
 
         url = build_endpoint(endpoint, language)
 
-        if self._debug:
-            print(f"[WorldstateClient DEBUG] Sending request to {url}...")
+        self._logger.debug(f"Sending request to {url}...")
 
         async with self._session.get(url) as response:
             response_text = await response.text()
@@ -138,8 +169,7 @@ class WorldstateClient:
                     msgspec.json.decode(response_text, type=ErrorMessage)
                 )
 
-            if self._debug:
-                print(f"[WorldstateClient DEBUG] Got request:\n{response_text}")
+            self._logger.debug(f"Got request:\n{response_text}")
 
             return response_text
 
@@ -150,18 +180,27 @@ class WorldstateClient:
     async def query(
         self, cls: Type[SupportsSingleQuery], language: Optional[Language] = None
     ) -> SupportsSingleQuery:
-        """Queries the model of type `SingleQueryModel` to return its corresponding object.
-
-        Args:
-            cls (Type[SupportsSingleQuery]): The model to query.
-            language (Optional[Language], optional): The language to return the object in. Defaults to None.
-
-        Raises:
-            UnsupportedSingleQueryError: When the passed type `cls` is not a subclass of `SingleQueryModel`.
-
-        Returns:
-            SupportsSingleQuery: The queried model.
         """
+        Queries the model of type `SingleQueryModel` to return its corresponding object.
+
+        Parameters
+        ----------
+        cls : Type[SupportsSingleQuery]
+            The model to query.
+        language : Optional[Language], optional
+            The language to return the object in, by default None.
+
+        Raises
+        ------
+        UnsupportedSingleQueryError
+            When the passed type `cls` is not a subclass of `SingleQueryModel`.
+
+        Returns
+        -------
+        SupportsSingleQuery
+            The queried model.
+        """
+
         if not issubclass(cls, SingleQueryModel):
             raise TypeError(
                 f"{cls.__name__} is required to be of type SingleQueryModel."
@@ -173,18 +212,27 @@ class WorldstateClient:
     async def query_list_of(
         self, cls: Type[SupportsMultiQuery], language: Optional[Language] = None
     ) -> List[SupportsMultiQuery]:
-        """Queries the model of type `MultiQueryModel` to return its corresponding object.
-
-        Args:
-            cls (Type[SupportsSingleQuery]): The model to query.
-            language (Optional[Language], optional): The language to return the object in. Defaults to None.
-
-        Raises:
-            UnsupportedSingleQueryError: When the passed type `cls` is not a subclass of `SingleQueryModel`.
-
-        Returns:
-            Optional[List[SupportsMultiQuery]]: A list of the queried model.
         """
+        Queries the model of type `MultiQueryModel` to return its corresponding object.
+
+        Parameters
+        ----------
+        cls : Type[SupportsSingleQuery]
+            The model to query.
+        language : Optional[Language], optional
+            The language to return the object in, by default None.
+
+        Raises
+        ------
+        UnsupportedSingleQueryError
+            When the passed type `cls` is not a subclass of `SingleQueryModel`.
+
+        Returns
+        -------
+        Optional[List[SupportsMultiQuery]]
+            A list of the queried model.
+        """
+
         if not issubclass(cls, MultiQueryModel):
             raise TypeError(
                 f"{cls.__name__} is required to be of type MultiQueryModel."
@@ -243,23 +291,19 @@ class WorldstateClient:
         def decorator(func: Callable[..., Coroutine[Any, Any, None]]) -> _TaskHelper:
             @wraps(func)
             async def inner() -> None:
-                item: Optional[TimedEvent] = None  # type: ignore
+                item: _SingleQueryTimedEvent = await self.query(type)  # type: ignore
                 while True:
                     try:
-                        # first cycle
-                        if item is None:
-                            item: TimedEvent = await self.query(type)  # type: ignore
-
                         # check if the event is over, if so, retry in 1 minute (API doesn't refresh at the exact point of expiry)
                         if item.expiry <= datetime.now(tz=timezone.utc):
-                            if self._debug:
-                                print(
-                                    f"[WorldstateClient DEBUG : listener : {type}] Retry started. Looking for state change from the API"
-                                )
+                            self._logger.listener_debug(
+                                "Retry started. Looking for state change from the API",
+                                type,
+                            )
 
                             await asyncio.sleep(60)
 
-                            new_item: TimedEvent = await self.query(type)  # type: ignore
+                            new_item: _SingleQueryTimedEvent = await self.query(type)  # type: ignore
 
                             if item.expiry < new_item.expiry:
                                 # we now know that it is a different event, so we can call the callback function
@@ -274,9 +318,9 @@ class WorldstateClient:
                             item.expiry - datetime.now(tz=timezone.utc)
                         ).total_seconds()
 
-                        if self._debug:
-                            print(
-                                f"[WorldstateClient DEBUG : listener : {type}] Sleeping {seconds_to_wait} seconds"
+                        if seconds_to_wait > 0:
+                            self._logger.listener_debug(
+                                f"Sleeping {seconds_to_wait} seconds", type
                             )
                         await asyncio.sleep(
                             seconds_to_wait

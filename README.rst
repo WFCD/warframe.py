@@ -22,20 +22,39 @@ Quickstart
 
 .. code-block:: python
 
-    import asyncio
+    # queries are just another way to get the data to the corresponding objects.
+    # this is really just personal preference.
 
-    from warframe.worldstate import Language, WorldstateClient
+    import asyncio
+    import logging
+
+    from warframe.worldstate import WorldstateClient, WorldstateLogger
+    
+    # import the models you want to use
+    from warframe.worldstate.models import Cetus
 
 
     async def main():
-        async with WorldstateClient() as client:
-            cetus = await client.get_cetus(language=Language.English)  # english is default
-            print(cetus.short_string)
+        # Note that the default logger is pretty much empty (nothing will be logged)
+        # so if you want to make use of the logger, make your own:
+        logger = WorldstateLogger("name whatever you want", logging.DEBUG)
+        logger.addHandler(logging.StreamHandler())
+
+        async with WorldstateClient(logger=logger) as client:  # pass the logger
+            cetus = await client.get_cetus()
+            # or ...
+
+            # just throw the model into `query(type)`
+            # note that for stuff like fissures you need `query_list_of(type)`
+            cetus = await client.query(Cetus)
+
+            print(cetus)
 
 
     if __name__ == "__main__":
         loop = asyncio.new_event_loop()
         loop.run_until_complete(main())
+
 
 Installing
 ----------
