@@ -1,6 +1,3 @@
-# queries are just another way to get the data to the corresponding objects.
-# this is really just personal preference.
-
 import asyncio
 import logging
 

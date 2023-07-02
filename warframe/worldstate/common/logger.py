@@ -1,10 +1,11 @@
+from __future__ import annotations
+
 from logging import Logger
-from typing import TYPE_CHECKING, Union
+from typing import TYPE_CHECKING, Type, Union
 
 if TYPE_CHECKING:
-    # as soon as state listeners are merged
-    # from ..client import _SingleQueryTimedEvent
-    pass
+    from ..client import _SingleQueryTimedEvent
+
 
 __all__ = ["WorldstateLogger"]
 
@@ -16,13 +17,9 @@ class WorldstateLogger(Logger):
     def debug(self, msg: object, *args: object) -> None:
         return super().debug(f"[WorldstateClient DEBUG] {msg}", *args)
 
-    # def listener_debug(
-    #         self,
-    #         msg: object,
-    #         *args: object,
-    #         listener_cls: Type[_SingleQueryTimedEvent]
-    # ) -> None:
-    #     return super().debug(
-    #         f"[WorldstateClient DEBUG : listener : {listener_cls}] {msg}",
-    #         *args
-    #     )
+    def listener_debug(
+        self, msg: object, listener_cls: Type[_SingleQueryTimedEvent], *args: object
+    ) -> None:
+        return super().debug(
+            f"[WorldstateClient DEBUG : listener : {listener_cls}] {msg}", *args
+        )

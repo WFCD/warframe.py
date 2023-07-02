@@ -34,13 +34,20 @@ class Endpoint(Enum):
 
 
 def build_endpoint(endpoint: str, language: Language = Language.EN) -> str:
-    """Returns an URL based on the endpoint and language
-
-    Args:
-        endpoint (str): The endpoint of the request.
-        language (Language, optional): The language the API should respond in. Defaults to Language.EN.
-
-    Returns:
-        str: The built URL.
     """
+    Returns an URL based on the endpoint and language.
+
+    Parameters
+    ----------
+    endpoint : str
+        The endpoint of the request.
+    language : Language, optional
+        The language the API should respond in, by default Language.EN.
+
+    Returns
+    -------
+    str
+        The built URL.
+    """
+
     return f"{BASE_URL}{endpoint}/?language={language.value}"

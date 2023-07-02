@@ -3,12 +3,7 @@ from typing import Any, ClassVar, List, Type, TypeVar
 
 import msgspec
 
-__all__ = [
-    "MultiQueryModel",
-    "SingleQueryModel",
-    "WorldstateObject",
-    "TimedEvent",
-]
+__all__ = ["MultiQueryModel", "SingleQueryModel", "WorldstateObject", "TimedEvent"]
 
 
 def _decode_hook(type: Type, obj: Any) -> Any:
@@ -19,14 +14,20 @@ def _decode_hook(type: Type, obj: Any) -> Any:
 
 
 def _get_short_format_time_string(dt: datetime) -> str:
-    """Returns a short time formatted string based on the now and the dt.
-
-    Args:
-        dt (datetime): The time the Event XYZ started/ends
-
-    Returns:
-        str: The short time formatted string of the time in between now and when the dt.
     """
+    Returns a short time formatted string based on the current time and the specified datetime.
+
+    Parameters
+    ----------
+    dt : datetime
+        The time the event started/ended.
+
+    Returns
+    -------
+    str
+        The short time formatted string representing the time difference between now and the specified datetime.
+    """
+
     now = datetime.now(tz=timezone.utc)
     time_in_between = now - dt if now > dt else dt - now
 
@@ -90,15 +91,22 @@ class MultiQueryModel(WorldstateObject):
 
     @classmethod
     def _from_json(cls: Type[T], response: str) -> List[T]:
-        """Decodes a JSON string to an list of object of T.
-
-        Args:
-            cls (Type[T]): The type T.
-            response (str): The raw JSON as string.
-
-        Returns:
-            List[T]: A list of objects of T.
         """
+        Decodes a JSON string to a list of objects of type T.
+
+        Parameters
+        ----------
+        cls : Type[T]
+            The type T.
+        response : str
+            The raw JSON as a string.
+
+        Returns
+        -------
+        List[T]
+            A list of objects of type T.
+        """
+
         return msgspec.json.decode(response, type=List[cls], dec_hook=_decode_hook)
 
 
@@ -111,13 +119,20 @@ class SingleQueryModel(WorldstateObject):
 
     @classmethod
     def _from_json(cls: Type[T], response: str) -> T:
-        """Decodes a JSON string to an object of T.
-
-        Args:
-            cls (Type[T]): The type T.
-            response (str): The raw JSON as string.
-
-        Returns:
-            T: The object of T
         """
+        Decodes a JSON string to an object of type T.
+
+        Parameters
+        ----------
+        cls : Type[T]
+            The type T.
+        response : str
+            The raw JSON as a string.
+
+        Returns
+        -------
+        T
+            The object of type T.
+        """
+
         return msgspec.json.decode(response, type=cls, dec_hook=_decode_hook)
