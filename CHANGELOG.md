@@ -1,3 +1,10 @@
+# [0.5.0](https://github.com/WFCD/warframe.py/compare/v0.4.0...v0.5.0) (2023-07-02)
+
+
+### Features
+
+* logger for the WorldstateClient ([607c8cd](https://github.com/WFCD/warframe.py/commit/607c8cd6797f9e28bf2323766be8a2924cba3996))
+
 # [0.4.0](https://github.com/WFCD/warframe.py/compare/v0.3.5...v0.4.0) (2023-07-01)
 
 
