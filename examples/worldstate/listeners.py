@@ -16,7 +16,7 @@ client = WorldstateClient(logger=logger)
 @client.listen_to(OrbVallis)  # decorate with the listen_to(type) function
 # this function will be called if the state of the Type changes
 async def on_vallis_state_change(
-    vallis: OrbVallis,  # this function will be called if the state of the Type changes
+    vallis: OrbVallis,
 ) -> None:
     print("-" * 20)
     print("ORB VALLIS")
