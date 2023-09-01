@@ -1,17 +1,16 @@
 import asyncio
 import logging
 
-from warframe.worldstate import WorldstateClient, WorldstateLogger
+from warframe.worldstate import WorldstateClient, utils
 from warframe.worldstate.models import Cetus
 
 
 async def main():
     # Note that the default logger is pretty much empty (nothing will be logged)
-    # so if you want to make use of the logger, make your own:
-    logger = WorldstateLogger("name whatever you want", logging.DEBUG)
-    logger.addHandler(logging.StreamHandler())
+    # so if you want to make use of the logger, you can use this helper function:
+    utils.setup_logging(handler=logging.StreamHandler(), level=logging.DEBUG, root=True)
 
-    async with WorldstateClient(logger=logger) as client:  # pass the logger
+    async with WorldstateClient() as client:
         cetus = await client.query(Cetus)
 
         print(cetus)

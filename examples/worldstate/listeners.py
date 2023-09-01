@@ -1,15 +1,13 @@
 import asyncio
 import logging
 
-from warframe.worldstate import WorldstateClient, WorldstateLogger
+from warframe.worldstate import WorldstateClient, utils
 from warframe.worldstate.models import Cetus, OrbVallis
 
-# define logger
-logger = WorldstateLogger("main_wsclient", logging.DEBUG)
-logger.addHandler(logging.StreamHandler())
+utils.setup_logging(level=logging.DEBUG)
 
 # define client
-client = WorldstateClient(logger=logger)
+client = WorldstateClient()
 
 
 # listed to any type of SingleQueryModel and TimedEvent
