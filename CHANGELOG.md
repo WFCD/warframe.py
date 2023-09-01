@@ -1,3 +1,15 @@
+# [1.0.0](https://github.com/WFCD/warframe.py/compare/v0.6.0...v1.0.0) (2023-09-01)
+
+
+### Features
+
+* state listeners & logger overhaul ([#10](https://github.com/WFCD/warframe.py/issues/10)) ([f657dad](https://github.com/WFCD/warframe.py/commit/f657dadd6d959f577a72e071ced01f607821af8c))
+
+
+### BREAKING CHANGES
+
+* changed the api for logger & initialization for endpoints
+
 # [0.6.0](https://github.com/WFCD/warframe.py/compare/v0.5.0...v0.6.0) (2023-07-02)
 
 
