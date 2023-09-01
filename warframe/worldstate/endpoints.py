@@ -1,5 +1,7 @@
 from enum import Enum
+from typing import Type, Union
 
+from .common.core import MultiQueryModel, SingleQueryModel
 from .enums import Language
 
 BASE_URL = "https://api.warframestat.us/pc"
@@ -33,7 +35,10 @@ class Endpoint(Enum):
     SyndicateMission = "/syndicateMissions"
 
 
-def build_endpoint(endpoint: str, language: Language = Language.EN) -> str:
+def build_endpoint(
+    type: Type[Union[SingleQueryModel, MultiQueryModel]],
+    language: Language = Language.EN,
+) -> str:
     """
     Returns an URL based on the endpoint and language.
 
@@ -50,4 +55,4 @@ def build_endpoint(endpoint: str, language: Language = Language.EN) -> str:
         The built URL.
     """
 
-    return f"{BASE_URL}{endpoint}/?language={language.value}"
+    return f"{BASE_URL}{type.__endpoint__}/?language={language.value}"
