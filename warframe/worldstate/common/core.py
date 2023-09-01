@@ -1,3 +1,6 @@
+from __future__ import annotations
+
+from abc import ABC, abstractclassmethod, abstractmethod
 from datetime import datetime, timezone
 from typing import Any, ClassVar, List, Type, TypeVar
 
@@ -79,15 +82,26 @@ class WorldstateObject(msgspec.Struct, rename="camel"):
     pass
 
 
-T = TypeVar("T", bound=WorldstateObject)
+T = TypeVar("T", bound="Queryable")
 
 
-class MultiQueryModel(WorldstateObject):
+class Queryable(ABC, WorldstateObject):
     """
-    Base class for giving models an indicator whether they can only come from a JSON array.
+    Base class for everything related to queries.
     """
 
     __endpoint__: ClassVar[str]
+
+    @classmethod
+    @abstractmethod
+    def _from_json(cls: Type[T]):
+        pass
+
+
+class MultiQueryModel(Queryable):
+    """
+    Base class for giving models an indicator whether they can only come from a JSON array.
+    """
 
     @classmethod
     def _from_json(cls: Type[T], response: str) -> List[T]:
@@ -110,12 +124,10 @@ class MultiQueryModel(WorldstateObject):
         return msgspec.json.decode(response, type=List[cls], dec_hook=_decode_hook)
 
 
-class SingleQueryModel(WorldstateObject):
+class SingleQueryModel(Queryable):
     """
     Base class for giving models an indicator whether they can only come from a single JSON object.
     """
-
-    __endpoint__: ClassVar[str]
 
     @classmethod
     def _from_json(cls: Type[T], response: str) -> T:
