@@ -1,30 +1,37 @@
 import asyncio
-from datetime import datetime
-from typing import Literal, Optional
-
-from msgspec import field  # use this to rename response keys
+from typing import Literal
 
 from warframe.worldstate import WorldstateClient
-from warframe.worldstate.common.core import (
+from warframe.worldstate.common.core import (  # this import might change
     SingleQueryModel,
-)  # this import might change
+    TimedEvent,
+)
 
 
-class CustomCambionDrift(SingleQueryModel):
+class CustomCambionDrift(SingleQueryModel, TimedEvent):
+    """
+    This "feature" is there to provide an option to implement something that is not yet implemented.
+
+    Short explanation:
+    The Cambion Drift's endpoint responds in a single (json) object that's why we give it `SingleQueryModel`.
+    It is also a `TimedEvent` because it has an activation, expiry, etc. (basically a cycle).
+
+    Now, to add the attributes to the class simply look at the API docs.
+    Note that existing names will be converted from `camelCase` to `snake_case`.
+    To rename a given key (from the API response) simply use `msgspec.field` and set the `name` to its original, snake_case'd name.
+    e.g.:
+    ```py
+        my_renamed_state: Literal["vome", "fass"] = msgspec.field(name="state")
+    ```
+
+    `https://api.warframestat.us/pc` will be concatenated with `__endpoint__`.
+
+    After that's all done, simply slap your own Model into `client.query` and let warframe.py do its magic :)
+    """
+
     __endpoint__ = "/cambionCycle"  # specify endpoint here
 
-    # required
-
-    # at the endpoint, it is called expiry, to rename it use this:
-    expiry_dt: datetime = field(name="expiry")
-
-    activation: datetime
     state: Literal["vome", "fass"]
-
-    # optional
-
-    # to rename with default values, use this:
-    time_remaining: Optional[str] = field(name="timeLeft", default=None)
 
 
 async def main():
