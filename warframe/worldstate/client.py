@@ -141,21 +141,6 @@ class WorldstateClient:
         cls: Type[SupportsSingleQuery],
         language: Optional[Language] = None,
     ) -> SupportsSingleQuery:
-        ...
-
-    @overload
-    async def query(
-        self,
-        cls: Type[SupportsMultiQuery],
-        language: Optional[Language] = None,
-    ) -> List[SupportsMultiQuery]:
-        ...
-
-    async def query(
-        self,
-        cls: Type[Union[SupportsSingleQuery, SupportsMultiQuery]],
-        language: Optional[Language] = None,
-    ) -> Union[SupportsSingleQuery, List[SupportsMultiQuery]]:
         """
         Queries the model of type `SingleQueryModel` to return its corresponding object.
 
@@ -164,18 +149,44 @@ class WorldstateClient:
         cls : Type[SupportsSingleQuery]
             The model to query.
         language : Optional[Language], optional
-            The language to return the object in, by default None.
-
-        Raises
-        ------
-        UnsupportedSingleQueryError
-            When the passed type `cls` is not a subclass of `SingleQueryModel`.
+            The language to return the queried model in, by default None
 
         Returns
         -------
         SupportsSingleQuery
             The queried model.
         """
+        ...
+
+    @overload
+    async def query(
+        self,
+        cls: Type[SupportsMultiQuery],
+        language: Optional[Language] = None,
+    ) -> List[SupportsMultiQuery]:
+        """
+        Queries the model of type `MultiQueryModel` to return a list of its corresponding object.
+
+        Parameters
+        ----------
+        cls : Type[SupportsMultiQuery]
+            The model to query.
+        language : Optional[Language], optional
+            The language to return the queried model in, by default None
+
+        Returns
+        -------
+        List[SupportsMultiQuery]
+            A list of the queried model.
+        """
+        ...
+
+    async def query(
+        self,
+        cls: Type[Union[SupportsSingleQuery, SupportsMultiQuery]],
+        language: Optional[Language] = None,
+    ) -> Union[SupportsSingleQuery, List[SupportsMultiQuery]]:
+        # -----
         json = await self._request(cls, language)
         return cls._from_json(json)
 
