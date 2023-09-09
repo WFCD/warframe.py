@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/WFCD/warframe.py/compare/v1.0.0...v1.1.0) (2023-09-09)
+
+
+### Features
+
+* **client:** dynamically support single and multi models w/ typing ([#11](https://github.com/WFCD/warframe.py/issues/11)) ([6ace7d7](https://github.com/WFCD/warframe.py/commit/6ace7d799bc1554b23c68d14ad28541d1210dd20))
+
 # [1.0.0](https://github.com/WFCD/warframe.py/compare/v0.6.0...v1.0.0) (2023-09-01)
 
 
