@@ -2,7 +2,17 @@ import asyncio
 import logging
 from datetime import datetime, timezone
 from functools import wraps
-from typing import Any, Callable, Coroutine, List, Optional, Type, TypeVar, Union
+from typing import (
+    Any,
+    Callable,
+    Coroutine,
+    List,
+    Optional,
+    Type,
+    TypeVar,
+    Union,
+    overload,
+)
 
 import aiohttp
 import msgspec
@@ -125,9 +135,27 @@ class WorldstateClient:
     # Queries
     #
 
+    @overload
     async def query(
-        self, cls: Type[SupportsSingleQuery], language: Optional[Language] = None
+        self,
+        cls: Type[SupportsSingleQuery],
+        language: Optional[Language] = None,
     ) -> SupportsSingleQuery:
+        ...
+
+    @overload
+    async def query(
+        self,
+        cls: Type[SupportsMultiQuery],
+        language: Optional[Language] = None,
+    ) -> List[SupportsMultiQuery]:
+        ...
+
+    async def query(
+        self,
+        cls: Type[Union[SupportsSingleQuery, SupportsMultiQuery]],
+        language: Optional[Language] = None,
+    ) -> Union[SupportsSingleQuery, List[SupportsMultiQuery]]:
         """
         Queries the model of type `SingleQueryModel` to return its corresponding object.
 
@@ -174,6 +202,9 @@ class WorldstateClient:
         Optional[List[SupportsMultiQuery]]
             A list of the queried model.
         """
+        logging.getLogger(__name__).warn(
+            "Deprecation warning: `query_list_of(type)` is deprecated and will be removed in version 2.0. Use `query(type)` instead."
+        )
         json = await self._request(cls, language)
         return cls._from_json(json)
 
