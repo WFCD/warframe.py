@@ -6,7 +6,7 @@ from warframe.worldstate import Language, WorldstateClient
 async def main():
     async with WorldstateClient() as client:
         cetus = await client.get_cetus(language=Language.English)  # english is default
-        print(cetus.short_string)
+        print(cetus.eta)
 
 
 if __name__ == "__main__":
