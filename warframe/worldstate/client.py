@@ -126,7 +126,7 @@ class WorldstateClient:
                 )
 
             logging.getLogger(__name__).debug(
-                f"Got request from the {type.__name__} endpoint"
+                f"Got response from the {type.__name__} endpoint"
             )
 
             return response_text
