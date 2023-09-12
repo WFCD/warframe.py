@@ -1,5 +1,7 @@
 import logging
-from typing import Any, TypeAlias
+from typing import Any
+
+from typing_extensions import TypeAlias
 
 from .common.logger import DefaultWorldstateFormatter, stream_has_color_support
 
