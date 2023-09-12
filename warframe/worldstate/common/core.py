@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from abc import ABC, abstractclassmethod, abstractmethod
+from abc import abstractmethod
 from datetime import datetime, timezone
 from typing import Any, ClassVar, List, Type, TypeVar
 
@@ -85,7 +85,7 @@ class WorldstateObject(msgspec.Struct, rename="camel"):
 T = TypeVar("T", bound="Queryable")
 
 
-class Queryable(ABC, WorldstateObject):
+class Queryable(WorldstateObject):
     """
     Base class for everything related to queries.
     """
