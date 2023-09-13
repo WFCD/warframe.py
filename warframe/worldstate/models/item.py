@@ -61,7 +61,7 @@ class ShallowItem(MultiQueryModel):
     description: str
     "The localized description of the Item"
 
-    Item_count: int
+    item_count: int
     "The amount of Items needed"
 
     image_name: str
