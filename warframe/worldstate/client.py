@@ -27,7 +27,7 @@ from .common import (
 from .endpoints import Language, build_endpoint
 from .exceptions import ErrorMessage, SessionNotFound, WorldstateAPIError
 from .listeners import TypeListener
-from .models import Alert, CambionDrift, Cetus, OrbVallis
+from .models import Alert, CambionDrift, Cetus, OrbVallis, Item
 
 __all__ = ["WorldstateClient"]
 
@@ -138,7 +138,7 @@ class WorldstateClient:
     @overload
     async def query(
         self,
-        cls: Type[SupportsSingleQuery],
+        query: Type[SupportsSingleQuery],
         language: Optional[Language] = None,
     ) -> SupportsSingleQuery:
         """
@@ -146,7 +146,7 @@ class WorldstateClient:
 
         Parameters
         ----------
-        cls : Type[SupportsSingleQuery]
+        query : Type[SupportsSingleQuery]
             The model to query.
         language : Optional[Language], optional
             The language to return the queried model in, by default None
@@ -161,7 +161,7 @@ class WorldstateClient:
     @overload
     async def query(
         self,
-        cls: Type[SupportsMultiQuery],
+        query: Type[SupportsMultiQuery],
         language: Optional[Language] = None,
     ) -> List[SupportsMultiQuery]:
         """
@@ -169,7 +169,7 @@ class WorldstateClient:
 
         Parameters
         ----------
-        cls : Type[SupportsMultiQuery]
+        query : Type[SupportsMultiQuery]
             The model to query.
         language : Optional[Language], optional
             The language to return the queried model in, by default None
@@ -181,14 +181,34 @@ class WorldstateClient:
         """
         ...
 
+    @overload
     async def query(
         self,
-        cls: Type[Union[SupportsSingleQuery, SupportsMultiQuery]],
+        query: str,
+        language: Optional[Language] = None,
+    ) -> Item:
+        """Queries the provided string and tries to parse it to an Item.
+
+        Args:
+            query (str): The string that will be used for the query.
+            language (Optional[Language], optional): The language to return the Item in model in. Defaults to None.
+
+        Returns:
+            Item: The Item that was parsed from the query.
+        """
+        ...
+
+    async def query(
+        self,
+        query: Union[Type[SupportsSingleQuery], Type[SupportsMultiQuery], str],
         language: Optional[Language] = None,
     ) -> Union[SupportsSingleQuery, List[SupportsMultiQuery]]:
         # -----
-        json = await self._request(cls, language)
-        return cls._from_json(json)
+        if isinstance(query, str):
+            raise NotImplementedError
+        else:
+            json = await self._request(query, language)
+            return query._from_json(json)
 
     async def query_list_of(
         self, cls: Type[SupportsMultiQuery], language: Optional[Language] = None

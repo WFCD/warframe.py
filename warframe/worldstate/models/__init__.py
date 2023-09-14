@@ -14,3 +14,4 @@ from .fissure import *
 from .archon_hunt import *
 from .sortie import *
 from .event import *
+from .item import Item
