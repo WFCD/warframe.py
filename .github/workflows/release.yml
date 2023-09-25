@@ -3,10 +3,31 @@ on:
   push:
     branches:
       -  main
+  pull_request:
+    branches:
+      -  main
+
 jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: 3.8
+      - run: pip install -r requirements.txt
+      - uses: isort/isort-action@master
+        with:
+          isortVersion: '5.12.0'
+      - uses: psf/black@stable
+        with:
+          version: '23.9.0'
+
   semantic-release:
     runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'push' }}
     # wait until test & lint complete
+    needs: ['lint']
     # needs: ['lint', 'test']
     steps:
       - uses: actions/checkout@v3
