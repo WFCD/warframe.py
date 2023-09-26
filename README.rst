@@ -22,7 +22,7 @@ Quickstart
 
 .. code-block:: python
 
-    
+
     import asyncio
     import logging
 
@@ -69,3 +69,7 @@ Supported python versions:
 - 3.11
 - 3.10
 - 3.9
+
+Contributing
+------------
+Contributions are always welcome! Please read the `contributing guidelines <CONTRIBUTE.md>`__ first.

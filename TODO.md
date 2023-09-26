@@ -9,6 +9,8 @@ endpoints
   - Item class inherits from WorldstateObject and MultiQueryModel
   - Put all major infos in the Item class (split them later)
 
+- Test compatibility with Python 3.8
+
 ## Version 2.0
 
 - Remove `WorldstateClient.query_list_of(type)` as `WorldstateClient.query(type)` now does the same while keeping the type.

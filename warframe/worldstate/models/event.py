@@ -3,10 +3,9 @@ from typing import List, Optional
 
 from msgspec import field
 
-from .reward import Reward
-
 from ..common import MultiQueryModel, TimedEvent
-from ..enums import MissionType, Faction, Syndicate
+from ..enums import Faction, MissionType, Syndicate
+from .reward import Reward
 
 __all__ = ["Event"]
 
