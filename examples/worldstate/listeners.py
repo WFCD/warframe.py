@@ -31,12 +31,8 @@ async def on_cetus_state_change(cetus: Cetus):
 
 
 async def main():
-    print(
-        (await client.query(OrbVallis))
-    )  # this is just to have a reference to the current state
-    print(
-        (await client.query(Cetus))
-    )  # this is just to have a reference to the current state
+    print((await client.query(OrbVallis)))  # this is just to have a reference to the current state
+    print((await client.query(Cetus)))  # this is just to have a reference to the current state
     on_vallis_state_change.start()  # start the listener
     on_cetus_state_change.start()
     await asyncio.sleep(3600)  # for testing, we wait an hour here
