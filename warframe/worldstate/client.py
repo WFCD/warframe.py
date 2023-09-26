@@ -2,17 +2,7 @@ import asyncio
 import logging
 from datetime import datetime, timezone
 from functools import wraps
-from typing import (
-    Any,
-    Callable,
-    Coroutine,
-    List,
-    Optional,
-    Type,
-    TypeVar,
-    Union,
-    overload,
-)
+from typing import Any, Callable, Coroutine, List, Optional, Type, TypeVar, Union, overload
 
 import aiohttp
 import msgspec
@@ -113,21 +103,15 @@ class WorldstateClient:
 
         url = build_endpoint(type, language)
 
-        logging.getLogger(__name__).debug(
-            f"Sending request to the {type.__name__} endpoint"
-        )
+        logging.getLogger(__name__).debug(f"Sending request to the {type.__name__} endpoint")
 
         async with self._session.get(url) as response:
             response_text = await response.text()
 
             if response.status != 200:
-                raise WorldstateAPIError(
-                    msgspec.json.decode(response_text, type=ErrorMessage)
-                )
+                raise WorldstateAPIError(msgspec.json.decode(response_text, type=ErrorMessage))
 
-            logging.getLogger(__name__).debug(
-                f"Got request from the {type.__name__} endpoint"
-            )
+            logging.getLogger(__name__).debug(f"Got request from the {type.__name__} endpoint")
 
             return response_text
 
@@ -227,9 +211,7 @@ class WorldstateClient:
         json = await self._request(Cetus, language)
         return Cetus._from_json(json)
 
-    async def get_cambion_drift(
-        self, language: Optional[Language] = None
-    ) -> CambionDrift:
+    async def get_cambion_drift(self, language: Optional[Language] = None) -> CambionDrift:
         json = await self._request(CambionDrift, language)
         return CambionDrift._from_json(json)
 
@@ -237,9 +219,7 @@ class WorldstateClient:
         json = await self._request(OrbVallis, language)
         return OrbVallis._from_json(json)
 
-    async def get_alerts(
-        self, language: Optional[Language] = None
-    ) -> Optional[List[Alert]]:
+    async def get_alerts(self, language: Optional[Language] = None) -> Optional[List[Alert]]:
         json = await self._request(OrbVallis, language)
         return Alert._from_json(json)
 
@@ -273,12 +253,8 @@ class WorldstateClient:
         Returns:
             _TaskHelper: A helper class that wraps the callback function. Call `.start()` on it in order to start the listener. Same goes for `.stop()`
         """
-        if not issubclass(type, SingleQueryModel) and not not issubclass(
-            type, TimedEvent
-        ):
-            raise TypeError(
-                f"{type.__name__} has to implement SingleQueryModel and TimedEvent"
-            )
+        if not issubclass(type, SingleQueryModel) and not not issubclass(type, TimedEvent):
+            raise TypeError(f"{type.__name__} has to implement SingleQueryModel and TimedEvent")
 
         def decorator(
             func: Callable[[SingleQueryTimedEvent], Coroutine[Any, Any, None]]

@@ -10,8 +10,12 @@ from warframe.worldstate.models import Arbitration, Fissure
 async def main():
     async with WorldstateClient() as client:
         # import from models and pass the type you want the object of
-        arbi = await client.query(Arbitration)  # of Type SingleQuery - a single  object  of type `Arbitration`
-        fissures = await client.query(Fissure)  # of Type MultiQuery  - a list of objects of type `Fissure`
+        arbi = await client.query(
+            Arbitration
+        )  # of Type SingleQuery - a single  object  of type `Arbitration`
+        fissures = await client.query(
+            Fissure
+        )  # of Type MultiQuery  - a list of objects of type `Fissure`
 
         print(arbi)
         for fissure in fissures:

@@ -3,7 +3,7 @@ from typing import List, Optional
 from msgspec import field
 
 from ..common import SingleQueryModel, TimedEvent
-from ..enums import MissionType, Faction
+from ..enums import Faction, MissionType
 
 __all__ = ["Sortie"]
 

@@ -3,7 +3,7 @@ from typing import List, Optional
 
 from msgspec import field
 
-from ..common import SingleQueryModel, WorldstateObject, TimedEvent
+from ..common import SingleQueryModel, TimedEvent, WorldstateObject
 
 __all__ = ["VoidTrader"]
 
