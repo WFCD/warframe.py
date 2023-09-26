@@ -2,10 +2,7 @@ import asyncio
 from typing import Literal
 
 from warframe.worldstate import WorldstateClient
-from warframe.worldstate.common.core import (  # this import might change
-    SingleQueryModel,
-    TimedEvent,
-)
+from warframe.worldstate.common.core import SingleQueryModel, TimedEvent  # this import might change
 
 
 class CustomCambionDrift(SingleQueryModel, TimedEvent):
