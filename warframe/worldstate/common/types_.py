@@ -3,7 +3,12 @@ from typing import ClassVar, Literal, Protocol, Type, TypeVar
 
 from .core import WorldstateObject
 
-__all__ = ["ItemRewardType", "FissureTier", "FissureTierNumber", "_TimedAndSingleQuery"]
+__all__ = [
+    "ItemRewardType",
+    "FissureTier",
+    "FissureTierNumber",
+    "_TimedAndSingleQuery",
+]
 
 ItemRewardType = Literal[
     "vauban",

@@ -11,3 +11,4 @@ class Faction(Enum):
     Grineer = "Grineer"
     Tenno = "Tenno"
     Narmer = "Narmer"
+    Crossfire = "Crossfire"  # ??

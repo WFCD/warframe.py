@@ -1,5 +1,7 @@
 from enum import Enum
 
+__all__ = ["ItemType"]
+
 
 class ItemType(Enum):
     Glyph = "Glyph"

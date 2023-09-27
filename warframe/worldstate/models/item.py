@@ -1,11 +1,26 @@
 from datetime import datetime
 from typing import Any, List, Optional
 
+import msgspec
 from msgspec import field
 
-from ..common import MultiQueryModel, SingleQueryModel, TimedEvent
-from ..enums import Category, Faction, ItemType, MissionType, ProductCategory, Syndicate
-from .reward import Reward
+from ..common import MultiQueryModel, SingleQueryModel, TimedEvent, WorldstateDT
+from ..enums import (
+    Category,
+    Faction,
+    ItemRarity,
+    ItemType,
+    MissionType,
+    ProductCategory,
+    Syndicate,
+)
+
+
+class Drop(MultiQueryModel):
+    chance: float
+    location: str
+    rarity: ItemRarity
+    type: str
 
 
 class Introduction(SingleQueryModel):
@@ -44,10 +59,10 @@ class Patchlog(MultiQueryModel):
     fixes: str
     "Any fixes related to this Item"
 
-    drops: List[Any]  # help tobi?
+    drops: List[Any] = []  # help tobi?
     "idk"
 
-    masterable: bool
+    masterable: Optional[bool] = None
     "Whether the Item can be mastered"
 
 
@@ -61,17 +76,18 @@ class ShallowItem(MultiQueryModel):
     description: str
     "The localized description of the Item"
 
-    item_count: int
-    "The amount of Items needed"
-
     image_name: str
     "The name of the image of the Item"
 
     tradable: bool
     "Whether the Item is tradable or not"
 
-    type: ItemType
-    "The type of this Item"
+    count: int = msgspec.field(name="itemCount")
+    "The amount of Items needed"
+
+    drops: List[Drop] = []
+    # type: ItemType
+    # "The type of this Item"
 
 
 class Item(SingleQueryModel):
@@ -102,7 +118,7 @@ class Item(SingleQueryModel):
     product_category: Optional[ProductCategory] = None
     "The product category of this Item"
 
-    estimated_vault_date: Optional[datetime] = None
+    estimated_vault_date: Optional[WorldstateDT] = None
     "The estimated vault date of this Item"
 
     introduction: Optional[Introduction] = None

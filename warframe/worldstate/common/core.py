@@ -6,13 +6,26 @@ from typing import Any, ClassVar, List, Type, TypeVar
 
 import msgspec
 
-__all__ = ["MultiQueryModel", "SingleQueryModel", "WorldstateObject", "TimedEvent"]
+__all__ = [
+    "MultiQueryModel",
+    "SingleQueryModel",
+    "WorldstateObject",
+    "TimedEvent",
+    "WorldstateDT",
+]
 
 
-def _decode_hook(type: Type, obj: Any) -> Any:
-    if isinstance(type, datetime) and isinstance(obj, str):
-        return datetime.fromisoformat(obj.strip("Z"))
+class WorldstateDT(datetime):
+    """
+    Only there to have a distinct datetime for msgspec's decode hook.
+    """
 
+    pass
+
+
+def dec_hook(type: Type, obj: Any) -> Any:
+    if type is WorldstateDT and isinstance(obj, str):
+        return WorldstateDT.strptime(obj, "%Y-%m-%d")
     return obj
 
 
@@ -121,7 +134,7 @@ class MultiQueryModel(Queryable):
             A list of objects of type T.
         """
 
-        return msgspec.json.decode(response, type=List[cls], dec_hook=_decode_hook)
+        return msgspec.json.decode(response, type=List[cls], dec_hook=dec_hook)
 
 
 class SingleQueryModel(Queryable):
@@ -147,4 +160,4 @@ class SingleQueryModel(Queryable):
             The object of type T.
         """
 
-        return msgspec.json.decode(response, type=cls, dec_hook=_decode_hook)
+        return msgspec.json.decode(response, type=cls, dec_hook=dec_hook)

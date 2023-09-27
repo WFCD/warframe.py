@@ -17,6 +17,7 @@ from typing import (
 import aiohttp
 import msgspec
 
+from . import endpoints
 from .common import (
     MultiQueryModel,
     SingleQueryModel,
@@ -24,10 +25,10 @@ from .common import (
     WorldstateObject,
     _TimedAndSingleQuery,
 )
-from .endpoints import Language, build_endpoint
+from .enums import Language
 from .exceptions import ErrorMessage, SessionNotFound, WorldstateAPIError
 from .listeners import TypeListener
-from .models import Alert, CambionDrift, Cetus, OrbVallis, Item
+from .models import Alert, CambionDrift, Cetus, Item, OrbVallis
 
 __all__ = ["WorldstateClient"]
 
@@ -76,8 +77,11 @@ class WorldstateClient:
 
     async def _request(
         self,
-        type: Type[Union[SingleQueryModel, MultiQueryModel]],
+        query: Union[Type[SingleQueryModel], Type[MultiQueryModel], str],
         language: Optional[Language],
+        only: str = "",
+        remove: str = "",
+        by: str = "",
     ) -> str:
         """
         Sends a request to the given `endpoint` and returns its JSON content as string.
@@ -111,10 +115,15 @@ class WorldstateClient:
 
         language = language or self._default_lang
 
-        url = build_endpoint(type, language)
+        if isinstance(query, str):
+            url = endpoints.by_query(query, language, only, remove, by)
+            log_debug = f"items/{url.split('/')[3:5]}"
+        else:
+            url = endpoints.by_type(query, language)
+            log_debug = query.__name__
 
         logging.getLogger(__name__).debug(
-            f"Sending request to the {type.__name__} endpoint"
+            f"Sending request to the {log_debug} endpoint"
         )
 
         async with self._session.get(url) as response:
@@ -126,7 +135,7 @@ class WorldstateClient:
                 )
 
             logging.getLogger(__name__).debug(
-                f"Got response from the {type.__name__} endpoint"
+                f"Got response from the {log_debug} endpoint"
             )
 
             return response_text
@@ -186,6 +195,9 @@ class WorldstateClient:
         self,
         query: str,
         language: Optional[Language] = None,
+        only: str = "",
+        remove: str = "",
+        by: str = "",
     ) -> Item:
         """Queries the provided string and tries to parse it to an Item.
 
@@ -200,12 +212,16 @@ class WorldstateClient:
 
     async def query(
         self,
-        query: Union[Type[SupportsSingleQuery], Type[SupportsMultiQuery], str],
+        query,
         language: Optional[Language] = None,
-    ) -> Union[SupportsSingleQuery, List[SupportsMultiQuery]]:
+        only="",
+        remove="",
+        by="",
+    ):
         # -----
         if isinstance(query, str):
-            raise NotImplementedError
+            json = await self._request(query, language, only, remove, by)
+            return Item._from_json(json)
         else:
             json = await self._request(query, language)
             return query._from_json(json)

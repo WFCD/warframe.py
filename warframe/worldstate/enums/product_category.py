@@ -1,5 +1,7 @@
 from enum import Enum
 
+__all__ = ["ProductCategory"]
+
 
 class ProductCategory(Enum):
     SpaceMelee = "SpaceMelee"

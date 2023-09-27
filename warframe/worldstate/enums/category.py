@@ -1,5 +1,7 @@
 from enum import Enum
 
+__all__ = ["Category"]
+
 
 class Category(Enum):
     Warframes = "Warframes"

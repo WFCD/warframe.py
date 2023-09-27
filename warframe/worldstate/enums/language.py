@@ -1,5 +1,7 @@
 from enum import Enum
 
+__all__ = ["Language"]
+
 
 class Language(Enum):
     DE = "de"
@@ -14,14 +16,14 @@ class Language(Enum):
     EN = "en"
     UK = "uk"
 
-    German = DE
-    Spanish = ES
-    French = FR
-    Italian = IT
-    Korean = KO
-    Polish = PL
-    Portuguese = PT
-    Russian = RU
-    Chinese = ZH
-    English = EN
-    Ukrainian = UK
+    German = "de"
+    Spanish = "es"
+    French = "fr"
+    Italian = "it"
+    Korean = "ko"
+    Polish = "pl"
+    Portuguese = "pt"
+    Russian = "ru"
+    Chinese = "zh"
+    English = "en"
+    Ukrainian = "uk"
