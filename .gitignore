@@ -9,3 +9,5 @@ venv/
 package*.json
 .idea/
 node_modules
+
+.pre-commit-config.yaml

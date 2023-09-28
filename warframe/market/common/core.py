@@ -1,10 +1,12 @@
+from __future__ import annotations
+
 import json
 from datetime import datetime, timezone
-from typing import Any, ClassVar, List, Optional, Type, TypeVar
+from typing import Any, ClassVar, List, Optional, Self, Type, TypeVar, Union
 
 import msgspec
 
-__all__ = ["MarketObject", "SingleQueryModel", "MultiQueryModel"]
+__all__ = ["MarketObject"]
 
 
 class MarketObject(msgspec.Struct):
@@ -15,34 +17,25 @@ class MarketObject(msgspec.Struct):
     pass
 
 
-T = TypeVar("T", bound=MarketObject)
-
-
 class Queryable(MarketObject):
     __endpoint__: ClassVar[str]
     __payload_name__: ClassVar[str]
+    __payload_type__: ClassVar[Type]
 
     @classmethod
-    def _from_json(cls: Type[T], response: str):
-        raise NotImplementedError(
-            "This function has to be overridden in a derived class."
-        )
+    def _from_json(cls, response: dict) -> Union[Self, List[Self]]:
+        if cls.__payload_type__ is object:
+            if cls.__payload_name__:
+                return msgspec.from_builtins(response[cls.__payload_name__], type=cls)
+            return msgspec.from_builtins(response, type=cls)
 
+        elif cls.__payload_type__ is List:
+            if cls.__payload_name__:
+                return msgspec.from_builtins(response[cls.__payload_name__], type=List[cls])
+            return msgspec.from_builtins(response, type=List[cls])
 
-class SingleQueryModel(Queryable):
-    @classmethod
-    def _from_json(cls: Type[T], response: str) -> T:
-        data = json.loads(response)["payload"]
-
-        return msgspec.from_builtins(data, type=cls)
-
-
-class MultiQueryModel(Queryable):
-    @classmethod
-    def _from_json(cls: Type[T], response: str) -> List[T]:
-        data = json.loads(response)["payload"]
-
-        return msgspec.from_builtins(data, type=List[cls])
+        else:
+            raise Exception(f"{cls.__name__}'s payload type is invalid!")
 
 
 class Drop(MarketObject):
