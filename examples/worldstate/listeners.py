@@ -10,7 +10,7 @@ utils.setup_logging(level=logging.DEBUG)
 client = WorldstateClient()
 
 
-# listed to any type of SingleQueryModel and TimedEvent
+# listen to any type of SingleQueryModel and TimedEvent
 @client.listen_to(OrbVallis)  # decorate with the listen_to(type) function
 # this function will be called if the state of the Type changes
 async def on_vallis_state_change(
